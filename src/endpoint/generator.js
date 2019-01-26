@@ -34,9 +34,9 @@ export const generator = function({ endpoint, endpoints, title, folder }) {
   .copy(ENTITIES_BOILERPLATE, ENTITIES_DIR)
   .copy(MONGOOSE_ENTITY_BOILERPLATE, MONGOOSE_ENTITY_DIR)
   .then(() => {
-    console.log('done');
+    console.log('done'); // eslint-disable-line no-console
   })
   .catch(e => {
-    console.log(e);
+    console.log(e); // eslint-disable-line no-console
   });
 }

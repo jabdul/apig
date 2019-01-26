@@ -1,10 +1,6 @@
 import path from 'path';
-// import filewalker from 'filewalker';
-// import write from 'write';
-// import ncp from 'ncp';
 import inquirer from 'inquirer';
 import capitalize from 'capitalize';
-// import isNum from 'isnum';
 
 import { generator as generateEndpoint } from './endpoint/generator';
 

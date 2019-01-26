@@ -9,7 +9,7 @@
   "scripts": {
     "build": "babel src -d lib --ignore *.test*.js",
     "clean": "concurrently 'rimraf node_modules' 'rimraf lib/*' 'yarn cache clean'",
-    "lint": "eslint .",
+    "lint": "eslint src",
     "prepublish": "yarn build",
     "pretest": "yarn lint",
     "start": "babel-node src/index.js",
@@ -46,7 +46,7 @@
   },
   "dependencies": {
     "capitalize": "2.0.0",
-    "mkdir": "0.0.2",
+    "mkdirp": "0.5.1",
     "mustache": "3.0.1",
     "ramda": "0.26.1",
     "scaffold-generator": "2.0.3"

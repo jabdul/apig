@@ -2,8 +2,8 @@
   "moduleFileExtensions": ["js"],
   "moduleDirectories": ["node_modules"],
   "testRegex": ".*\\.test\\.js$",
-  "testPathIgnorePatterns": ["<rootDir>/endpoint/"],
-  "coveragePathIgnorePatterns": ["<rootDir>/endpoint/", "<rootDir>/node_modules/"],
+  "testPathIgnorePatterns": ["<rootDir>/scaffold/"],
+  "coveragePathIgnorePatterns": ["<rootDir>/scaffold/", "<rootDir>/node_modules/"],
   "collectCoverageFrom": [
     "<rootDir>/**/*.js"
   ],
