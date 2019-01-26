@@ -1,5 +1,5 @@
 import { pickBy, path } from 'ramda';
-import { timezone, intl } from '@elephant-healthcare/primary-care-utils';
+import { timezone, intl } from '@ctt/service-utils';
 
 import {{{scaffold_entity_capitalise}}} from './model';
 
@@ -31,7 +31,7 @@ const findAll = async ({ payload }) => {{{scaffold_entity_capitalise}}}.paginate
 
 const findById = async ({ payload }) => {{{scaffold_entity_capitalise}}}.findOne({ uuid: payload.uuid });
 
-const removeById = async ({ payload }) => await Patient.updateOne(
+const removeById = async ({ payload }) => await {{{scaffold_entity_capitalise}}}.updateOne(
   { uuid: payload.uuid },
   { $set: { 'meta.active': false, 'meta.updated': Date.now() } }
 );

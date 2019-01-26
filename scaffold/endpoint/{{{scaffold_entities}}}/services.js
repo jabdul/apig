@@ -1,4 +1,4 @@
-import { streams } from '@elephant-healthcare/primary-care-utils';
+import { streams } from '@ctt/service-utils';
 
 import tmplJson from './parsers/json';
 

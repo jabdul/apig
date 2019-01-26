@@ -11,11 +11,8 @@ export const generator = function({ endpoint, endpoints, title, folder }) {
     if (err) throw err;
   });
 
-  const SCAFFOLD_ENDPOINT = '../../scaffold/endpoint';
-  const ENTITIES_BOILERPLATE = path.resolve(folder, SCAFFOLD_ENDPOINT, '{{{scaffold_entities}}}');
-  const MONGOOSE_ENTITY_BOILERPLATE = path.resolve(folder, SCAFFOLD_ENDPOINT, 'persistence/mongoose/{{{scaffold_entity_capitalise}}}');
-  const ENTITIES_DIR = folder;
-  const MONGOOSE_ENTITY_DIR = path.resolve(folder, 'persistence/mongoose');
+  const SCAFFOLD = path.resolve(__dirname, '../../', 'scaffold/endpoint');
+  const DEST_DIR = folder;
 
   mustache.escape = v => v;
 
@@ -31,8 +28,7 @@ export const generator = function({ endpoint, endpoints, title, folder }) {
     ignore: config.FILES_IGNORE,
     render: mustache.render,
   })
-  .copy(ENTITIES_BOILERPLATE, ENTITIES_DIR)
-  .copy(MONGOOSE_ENTITY_BOILERPLATE, MONGOOSE_ENTITY_DIR)
+  .copy(SCAFFOLD, DEST_DIR)
   .then(() => {
     console.log('done'); // eslint-disable-line no-console
   })

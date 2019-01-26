@@ -2,7 +2,7 @@ import {
   makeMetaRequestPayloadSchema,
 } from '../utils/schemas';
 
-export const ROUTE_NAME = {{{scaffold_entities}}};
+export const ROUTE_NAME = '{{{scaffold_entities}}}';
 
 const options = {
   log: { collect: true },

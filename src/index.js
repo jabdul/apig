@@ -26,7 +26,7 @@ const questions = [
     type: 'input',
     name: 'folder',
     message: 'Endpopint installation folder',
-    default: () => path.resolve(__dirname, './src')
+    default: () => path.resolve(__dirname, '../', './src')
   },
 ];
 
