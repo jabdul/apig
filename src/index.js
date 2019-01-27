@@ -24,17 +24,17 @@ const questions = [
   },
   {
     type: 'input',
-    name: 'folder',
-    message: 'Endpopint installation folder',
+    name: 'destination',
+    message: 'Endpopint installation destination',
     default: () => path.resolve(__dirname, '../', './src')
   },
 ];
 
 const build = async () => {
   try {
-    const { endpoint, endpoints, title, folder } = await inquirer.prompt(questions);
+    const { endpoint, endpoints, title, destination } = await inquirer.prompt(questions);
 
-    generateEndpoint({ endpoint, endpoints, title, folder });
+    generateEndpoint({ endpoint, endpoints, title, destination });
   }
   catch(err) {
     console.log(err); // eslint-disable-line no-console

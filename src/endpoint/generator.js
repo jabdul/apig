@@ -6,13 +6,13 @@ import mkdirp from 'mkdirp';
 
 import config from './config';
 
-export const generator = function({ endpoint, endpoints, title, folder }) {
-  mkdirp(folder, (err) => {
+export const generator = function({ endpoint, endpoints, title, destination }) {
+  mkdirp(destination, (err) => {
     if (err) throw err;
   });
 
   const SCAFFOLD = path.resolve(__dirname, '../../', 'scaffold/endpoint');
-  const DEST_DIR = folder;
+  const DEST_DIR = destination;
 
   mustache.escape = v => v;
 
