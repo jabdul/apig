@@ -78,7 +78,7 @@ const findAll = async ({
   });
 };
 
-const removeById = async ({ db, payload }) => {
+const removeById = async ({ db, payload, config }) => {
   const result = await db.{{{scaffold_entities}}}.removeById({ payload, config });
 
   if (!result) {
@@ -86,7 +86,7 @@ const removeById = async ({ db, payload }) => {
   }
 };
 
-const updateById = async ({ db, payload }) => {
+const updateById = async ({ db, payload, config }) => {
   const result = await db.{{{scaffold_entities}}}.updateById({ payload, config });
 
   if (!result) {

@@ -230,7 +230,7 @@ export const update{{{scaffold_entity_capitalise}}} = ({
     try {
       response = h.response(await services[ROUTE_NAME]
         .updateById({ payload, config, json }))
-        .code(204);
+        .code(200);
     } catch (e) {
       request.log([e]);
       response = h.response('UNPROCESSABLE ENTITY').code(422);

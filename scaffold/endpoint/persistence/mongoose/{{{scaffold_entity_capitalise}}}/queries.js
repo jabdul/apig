@@ -9,7 +9,7 @@ const create = async ({ payload }) => {
     meta: { ...payload.meta, ...{ created: timezone.parse(Date.now(), intl.tz.LB) } },
   });
 
-  return await {{{scaffold_entity}}}.save();
+  return {{{scaffold_entity}}}.save();
 };
 
 const findAll = async ({ payload }) => {{{scaffold_entity_capitalise}}}.paginate(
@@ -31,7 +31,7 @@ const findAll = async ({ payload }) => {{{scaffold_entity_capitalise}}}.paginate
 
 const findById = async ({ payload }) => {{{scaffold_entity_capitalise}}}.findOne({ uuid: payload.uuid });
 
-const removeById = async ({ payload }) => await {{{scaffold_entity_capitalise}}}.updateOne(
+const removeById = async ({ payload }) => {{{scaffold_entity_capitalise}}}.updateOne(
   { uuid: payload.uuid },
   { $set: { 'meta.active': false, 'meta.updated': Date.now() } }
 );

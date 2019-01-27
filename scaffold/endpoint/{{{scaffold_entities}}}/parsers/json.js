@@ -20,6 +20,9 @@ export default ({
     code: error.code,
     message: error.message
   },
+  total,
+  pages,
+  offset,
   _embedded: {
     'ea:{{{scaffold_entity}}}': {{{scaffold_entities}}}.map(({
       uuid, name, meta

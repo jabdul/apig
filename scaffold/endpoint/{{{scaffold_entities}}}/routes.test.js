@@ -1,17 +1,22 @@
 import type { JestMockT } from 'jest';
 
 import create, {
-  ROUTE_NAME, findPatient, removePatient, updatePatient
+  ROUTE_NAME,
+  find{{{scaffold_entity_capitalise}}},
+  remove{{{scaffold_entity_capitalise}}},
+  update{{{scaffold_entity_capitalise}}},
+  findAll{{{scaffold_entity_capitalise}}}s,
 } from './routes';
 
 describe(`Routes: ${ROUTE_NAME}`, () => {
   const uid = 'dfa7fd57-5d6b-4563-b60e-6c9f78f19579';
   const services = {
-    patients: {
-      create: jest.fn().mockReturnValue('Patient entry created'),
-      findById: jest.fn().mockReturnValue('Patient entry fetched'),
-      removeById: jest.fn().mockReturnValue('Patient entry deleted'),
-      updateById: jest.fn().mockReturnValue('Patient entry modified'),
+    {{{scaffold_entities}}}: {
+      create: jest.fn().mockReturnValue('{{{scaffold_entity_capitalise}}} entry created'),
+      findById: jest.fn().mockReturnValue('{{{scaffold_entity_capitalise}}} entry fetched'),
+      removeById: jest.fn().mockReturnValue('{{{scaffold_entity_capitalise}}} entry deleted'),
+      updateById: jest.fn().mockReturnValue('{{{scaffold_entity_capitalise}}} entry modified'),
+      findAll: jest.fn().mockReturnValue('{{{scaffold_entity_capitalise}}} entries fetched'),
     }
   };
   const validate = {
@@ -72,7 +77,7 @@ describe(`Routes: ${ROUTE_NAME}`, () => {
 
   describe(`POST /${ROUTE_NAME}`, () => {
     const router = create({ services, validate });
-    const responseData = 'Patient entry created';
+    const responseData = '{{{scaffold_entity_capitalise}}} entry created';
     const statusCode = 201;
     const contentType = 'application/hal+json';
     let mockRequest: { log: JestMockT } = { log: null };
@@ -129,8 +134,8 @@ describe(`Routes: ${ROUTE_NAME}`, () => {
   });
 
   describe(`GET /${ROUTE_NAME}`, () => {
-    const router = findPatient({ services, validate });
-    const responseData = 'Patient entry fetched';
+    const router = find{{{scaffold_entity_capitalise}}}({ services, validate });
+    const responseData = '{{{scaffold_entity_capitalise}}} entry fetched';
     const statusCode = 200;
     const contentType = 'application/hal+json';
     let mockRequest: { log: JestMockT } = { log: null };
@@ -190,8 +195,8 @@ describe(`Routes: ${ROUTE_NAME}`, () => {
   });
 
   describe(`DELETE /${ROUTE_NAME}`, () => {
-    const router = removePatient({ services, validate });
-    const responseData = 'Patient entry deleted';
+    const router = remove{{{scaffold_entity_capitalise}}}({ services, validate });
+    const responseData = '{{{scaffold_entity_capitalise}}} entry deleted';
     const statusCode = 204;
     let mockRequest: { log: JestMockT } = { log: null };
     let mockResponse = null;
@@ -241,8 +246,8 @@ describe(`Routes: ${ROUTE_NAME}`, () => {
   });
 
   describe(`PUT /${ROUTE_NAME}`, () => {
-    const router = updatePatient({ services, validate });
-    const responseData = 'Patient entry modified';
+    const router = update{{{scaffold_entity_capitalise}}}({ services, validate });
+    const responseData = '{{{scaffold_entity_capitalise}}} entry modified';
     const statusCode = 200;
     let mockRequest: { log: JestMockT } = { log: null };
     let mockResponse = null;
@@ -262,12 +267,7 @@ describe(`Routes: ${ROUTE_NAME}`, () => {
       mockRequest = {
         log: jest.fn(),
         params: jest.fn().mockReturnValue({ uuid: uid }),
-        payload: jest.fn().mockReturnValue({
-          role_id: 'cba7fd57-5d6b-4563-b60e-6c9f78f19579',
-          email: 'test@test.com',
-          password: 'pa33word',
-          active: true,
-        })
+        payload: jest.fn().mockReturnValue({})
       };
     });
 
@@ -286,6 +286,78 @@ describe(`Routes: ${ROUTE_NAME}`, () => {
     it(`sets response HTTP status code to ${statusCode} on success`, async () => {
       await router.handler(mockRequest, mockResponse);
       expect(mockStatusCode.mock.calls[0][0]).toBe(statusCode);
+    });
+
+    it('returns response data on success', async () => {
+      await router.handler(mockRequest, mockResponse);
+      expect(mockData.mock.calls[0][0]).toBe(responseData);
+    });
+
+    it('logs tagged request', async () => {
+      await router.handler(mockRequest, mockResponse);
+      expect(mockRequest.log.mock.calls[0][0]).toEqual([`/${ROUTE_NAME}`]);
+    });
+  });
+
+  describe('GET /{{{scaffold_entities}}}/page/{pageid}', () => {
+    const router = findAll{{{scaffold_entity_capitalise}}}s({ services, validate });
+    const responseData = '{{{scaffold_entity_capitalise}}} entries fetched';
+    const statusCode = 200;
+    const contentType = 'application/hal+json';
+    let mockRequest: { log: JestMockT } = { log: null };
+    let mockResponse = null;
+    let mockData: JestMockT = null;
+    let mockStatusCode: JestMockT = null;
+    let mockContentType: JestMockT = null;
+
+    beforeEach(() => {
+      mockData = jest.fn();
+      mockStatusCode = jest.fn();
+      mockContentType = jest.fn();
+
+      mockResponse = {
+        response: mockData,
+        code: mockStatusCode,
+        type: mockContentType,
+      };
+      mockData.mockImplementation(() => mockResponse);
+      mockStatusCode.mockImplementation(() => mockResponse);
+      mockContentType.mockImplementation(() => mockResponse);
+      mockRequest = {
+        log: jest.fn(),
+        params: jest.fn().mockReturnValue({
+          pageid: 1,
+        }),
+        query: jest.fn().mockReturnValue({
+          name: 'name',
+          from: '2018-10-27T22:15:04.417Z',
+          to: '2018-12-29T20:04:06.313Z',
+          limit: 10,
+        })
+      };
+    });
+
+    it('sets HTTP method GET on /{{{scaffold_entities}}}/page/{pageid} path', () => {
+      expect(router.method).toBe('GET');
+      expect(router.path).toBe('/{{{scaffold_entities}}}/page/{pageid}');
+    });
+
+    it('sets validation on query params', () => {
+      const { query } = router.options.validate;
+      expect(query.name).toBeDefined();
+      expect(query.from).toBeDefined();
+      expect(query.to).toBeDefined();
+      expect(query.limit).toBeDefined();
+    });
+
+    it(`sets response HTTP status code to ${statusCode} on success`, async () => {
+      await router.handler(mockRequest, mockResponse);
+      expect(mockStatusCode.mock.calls[0][0]).toBe(statusCode);
+    });
+
+    it(`sets response HTTP header Content-Type to ${contentType} on success`, async () => {
+      await router.handler(mockRequest, mockResponse);
+      expect(mockContentType.mock.calls[0][0]).toBe(contentType);
     });
 
     it('returns response data on success', async () => {
