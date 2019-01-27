@@ -8,11 +8,12 @@
   },
   "scripts": {
     "build": "babel src -d lib --ignore *.test*.js",
+    "build:watch": "yarn build --watch",
     "clean": "concurrently 'rimraf node_modules' 'rimraf lib/*' 'yarn cache clean'",
     "lint": "eslint src",
     "prepublish": "yarn build",
     "pretest": "yarn lint",
-    "start": "babel-node src/index.js",
+    "start": "node lib/index.js",
     "test": "jest --config jest/test.config.json",
     "test:watch": "yarn test --watch",
     "validate": "npm ls"
