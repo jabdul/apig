@@ -1,0 +1,15 @@
+{
+  "server": {
+    "tlsCert": "../../../../certs/localhost.crt",
+    "tlsKey": "../../../../certs/localhost.key",
+    "tlsCa": "",
+    "port": {{{scaffold_service_port}}},
+    "secure": true
+  },
+  "mongo": {
+    "host": "mongodb://127.0.0.1:27017",
+    "database": "{{{scaffold_db_name}}}",
+    "user": "user",
+    "pass": "password"
+  }
+}

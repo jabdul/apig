@@ -2,10 +2,8 @@
   "moduleFileExtensions": ["js"],
   "moduleDirectories": ["node_modules"],
   "testRegex": ".*\\.test\\.js$",
-  "testPathIgnorePatterns": ["<rootDir>/scaffold/"],
-  "coveragePathIgnorePatterns": ["<rootDir>/scaffold/", "<rootDir>/node_modules/"],
   "collectCoverageFrom": [
-    "<rootDir>/**/*.js"
+    "src/**/*.js"
   ],
   "coverageThreshold": {
     "global": {
