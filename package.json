@@ -19,6 +19,7 @@
     "validate": "npm ls"
   },
   "pre-commit": [
+    "lint",
     "test"
   ],
   "jest": {
@@ -38,7 +39,7 @@
       "text-summary"
     ],
     "testPathIgnorePatterns": [
-      "./scaffold/"
+      "<rootDir>/scaffold/"
     ],
     "coveragePathIgnorePatterns": [
       "<rootDir>/scaffold/",
