@@ -83,6 +83,7 @@
     "mkdirp": "0.5.1",
     "mustache": "3.0.1",
     "ramda": "0.26.1",
+    "rxjs": "6.4.0",
     "scaffold-generator": "2.0.3"
   },
   "repository": {
