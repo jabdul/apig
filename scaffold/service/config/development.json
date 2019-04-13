@@ -8,7 +8,7 @@
   },
   "mongo": {
     "host": "mongodb://127.0.0.1:27017",
-    "database": "{{{scaffold_db_name}}}",
+    "database": "{{{scaffold_mongodb_name}}}",
     "user": "user",
     "pass": "password"
   }

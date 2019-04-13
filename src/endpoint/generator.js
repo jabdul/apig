@@ -22,7 +22,7 @@ export const questions = [
   {
     type: 'input',
     name: 'endpoints',
-    message: () => 'Endpoint pluralisartion (eg orders, accounts, payments)',
+    message: () => 'Endpoint pluralisation (eg orders, accounts, payments)',
     default: answers => `${answers.endpoint}s`,
   },
   {

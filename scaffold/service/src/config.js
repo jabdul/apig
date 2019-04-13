@@ -3,7 +3,7 @@ export default ({
     name: {
       doc: 'Service namespace',
       format: String,
-      default: '{{{scaffold_project_name}}}',
+      default: '{{{scaffold_project_directory}}}',
       env: 'SERVICE_NAME',
       arg: 'service-name',
     },

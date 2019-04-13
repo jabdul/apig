@@ -92,7 +92,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+ssh://{{{scaffold_project_git_ssh}}}#master"
+    "url": "git+ssh://{{{scaffold_project_git_url}}}"
   },
   "publishConfig": {
     "registry": "https://registry.npmjs.org/"
