@@ -53,7 +53,7 @@ const build = async () => {
         },
         () => {
           generator(answers);
-          console.log('Code generation completed.👋\n'); // eslint-disable-line no-console
+          console.log('\nCode generation completed.👋'); // eslint-disable-line no-console
         }
       );
     prompts.next(questions.selection);
