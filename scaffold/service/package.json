@@ -1,0 +1,102 @@
+{
+  "name": "{{{scaffold_project_name}}}",
+  "version": "0.0.1",
+  "description": "{{{scaffold_project_description}}}",
+  "main": "lib/index.js",
+  "scripts": {
+    "build": "babel src -d lib --ignore *.test*.js",
+    "dev": "nodemon --delay 250ms --exec NODE_ENV=development babel-node -- src/index.js",
+    "dump": "babel-node -- src/persistence/mongoose/backup.js",
+    "clean": "concurrently 'rimraf node_modules' 'rimraf lib/*' 'yarn cache clean'",
+    "flow": "flow check --all",
+    "flow:dep": "flow-typed install",
+    "lint": "eslint src",
+    "postinstall": "[ \"$NODE_ENV\" == production ] && exit 0; yarn flow:dep",
+    "prepublish": "yarn build",
+    "pretest": "yarn lint",
+    "seed": "babel-node -- src/persistence/mongoose/seed.js",
+    "start": "node lib/index.js",
+    "test": "jest",
+    "test:coverage": "jest --coverage",
+    "test:watch": "yarn test --watch",
+    "validate": "npm ls"
+  },
+  "pre-commit": [],
+  "jest": {
+    "testURL": "http://localhost/",
+    "roots": [
+      "./src/"
+    ],
+    "testMatch": [
+      "**/?(*.)test.js?(x)"
+    ],
+    "collectCoverageFrom": [
+      "src/**/*.{js,jsx}"
+    ],
+    "coverageReporters": [
+      "html",
+      "text",
+      "text-summary"
+    ],
+    "moduleNameMapper": {
+      "\\.(css|scss)$": "identity-obj-proxy"
+    },
+    "setupFiles": [
+      "babel-polyfill",
+      "./test/jest/consoleErrorsThrowException.js"
+    ]
+  },
+  "files": [
+    "lib"
+  ],
+  "devDependencies": {
+    "babel-eslint": "8.2.6",
+    "babel-jest": "23.4.2",
+    "concurrently": "3.6.1",
+    "eslint": "5.3.0",
+    "eslint-config-airbnb": "17.1.0",
+    "eslint-plugin-import": "2.13.0",
+    "eslint-plugin-jest": "21.20.2",
+    "flow-bin": "0.78.0",
+    "flow-typed": "2.5.1",
+    "jest": "23.5.0",
+    "nodemon": "1.18.3",
+    "precommit-hook-eslint": "3.0.0"
+  },
+  "dependencies": {
+    "@ctt/crud-api": "0.3.0",
+    "@ctt/service-utils": "1.0.3",
+    "babel-cli": "6.26.0",
+    "babel-core": "6.26.3",
+    "babel-plugin-transform-class-properties": "6.24.1",
+    "babel-plugin-transform-es2015-spread": "6.22.0",
+    "babel-plugin-transform-flow-strip-types": "6.22.0",
+    "babel-plugin-transform-object-rest-spread": "6.26.0",
+    "babel-plugin-transform-runtime": "6.23.0",
+    "babel-preset-env": "1.7.0",
+    "babel-preset-es2015": "6.24.1",
+    "babel-preset-flow": "6.23.0",
+    "convict": "4.3.2",
+    "dotenv": "6.0.0",
+    "hapi-auth-jwt2": "8.1.0",
+    "mongodb-backup": "1.6.9",
+    "mongodb-restore": "1.6.2",
+    "mongoose": "5.3.4",
+    "mongoose-paginate": "5.0.3",
+    "ramda": "0.25.0",
+    "uuid": "3.3.2",
+    "vision": "5.3.3"
+  },
+  "engines": {
+    "node": ">=10.14.1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+ssh://{{{scaffold_project_git_url}}}"
+  },
+  "publishConfig": {
+    "registry": "https://registry.npmjs.org/"
+  },
+  "author": "{{{scaffold_project_author}}}",
+  "license": "SEE LICENSE IN <LICENSE>"
+}

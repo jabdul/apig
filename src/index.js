@@ -1,40 +1,62 @@
-import path from 'path';
 import inquirer from 'inquirer';
-import capitalize from 'capitalize';
+import { Subject } from 'rxjs';
 
-import { generator as generateEndpoint } from './endpoint/generator';
+import { generator as endpointGenerator, questions as endpointQuestions } from './endpoint/generator';
+import { generator as serviceGenerator, questions as serviceQuestions } from './service/generator';
 
-const questions = [
-  {
-    type: 'input',
-    name: 'endpoint',
-    message: 'Endpoint name (eg order, account, payment)',
+export const questions = {
+  selection: {
+    type: 'checkbox',
+    name: 'scaffold',
+    message: 'What would you like to scaffold?',
+    choices: [
+      {
+        name: 'Endpoint',
+        value: 'endpoint',
+      },
+      new inquirer.Separator(),
+      {
+        name: 'Microservice API',
+        value: 'service',
+      }
+    ]
   },
-  {
-    type: 'input',
-    name: 'title',
-    message: 'Endpoint title (eg Order, Account, Payment)',
-    default: answers => capitalize(answers.endpoint),
-  },
-  {
-    type: 'input',
-    name: 'endpoints',
-    message: () => 'Endpoint pluralisartion (eg orders, accounts, payments)',
-    default: answers => `${answers.endpoint}s`,
-  },
-  {
-    type: 'input',
-    name: 'destination',
-    message: 'Endpopint installation destination',
-    default: () => path.resolve(__dirname, '../', './src')
-  },
-];
+  endpoint: [ endpointQuestions, endpointGenerator ],
+  service: [ serviceQuestions, serviceGenerator ],
+};
 
 const build = async () => {
   try {
-    const { endpoint, endpoints, title, destination } = await inquirer.prompt(questions);
+    const prompts = new Subject();
 
-    generateEndpoint({ endpoint, endpoints, title, destination });
+    let scaffold;
+    let generator;
+    let answers = {};
+    let i = -1;
+
+    inquirer.prompt(prompts)
+      .ui.process.subscribe(
+        ({ answer, name }) => {
+          if (i == -1) {
+            scaffold = questions[answer][0];
+            generator = questions[answer][1];
+          }
+
+          i++;
+          answers[name] = answer;
+
+          if (scaffold.length !== i) prompts.next(scaffold[i]);
+          else prompts.complete();
+        },
+        err => {
+          console.warn(err); // eslint-disable-line no-console
+        },
+        () => {
+          generator(answers);
+          console.log('\nCode generation completed.👋'); // eslint-disable-line no-console
+        }
+      );
+    prompts.next(questions.selection);
   }
   catch(err) {
     console.log(err); // eslint-disable-line no-console
