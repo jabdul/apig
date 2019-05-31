@@ -17,3 +17,7 @@ To generate a **service** or an **endpoint**, simply follow the instructions whe
 ```sh
 $ apig
 ```
+
+### notes
+
+1. After generating a **service**, rename the `package.json.replace` at root of new service to `package.json`
