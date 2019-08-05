@@ -33,7 +33,7 @@ export default ({
       headers: makeRequestHeaderSchema(validate),
       failAction: async (request, h, err) => {
         request.log([err]);
-        return h.response('BAD REQUEST').code(400);
+        return h.response('BAD REQUEST').code(400).takeover();
       },
       payload: makeRequestPayloadSchema(validate)
         .requiredKeys(
@@ -76,7 +76,7 @@ export const find{{{scaffold_entity_capitalise}}} = ({
       headers: makeRequestHeaderSchema(validate),
       failAction: async (request, h, err) => {
         request.log([err]);
-        return h.response('BAD REQUEST').code(400);
+        return h.response('BAD REQUEST').code(400).takeover();
       },
       params: {
         uuid: validate.string().guid({
@@ -117,7 +117,7 @@ export const findAll{{{scaffold_entity_capitalise}}}s = ({
       headers: makeRequestHeaderSchema(validate),
       failAction: async (request, h, err) => {
         request.log([err]);
-        return h.response('BAD REQUEST').code(400);
+        return h.response('BAD REQUEST').code(400).takeover();
       },
       params: {
         pageid: validate.number().integer().min(1),
@@ -168,7 +168,7 @@ export const remove{{{scaffold_entity_capitalise}}} = ({
       headers: makeRequestHeaderSchema(validate),
       failAction: async (request, h, err) => {
         request.log([err]);
-        return h.response('BAD REQUEST').code(400);
+        return h.response('BAD REQUEST').code(400).takeover();
       },
       params: {
         uuid: validate.string().guid({
@@ -207,7 +207,7 @@ export const update{{{scaffold_entity_capitalise}}} = ({
       headers: makeRequestHeaderSchema(validate),
       failAction: async (request, h, err) => {
         request.log([err]);
-        return h.response('BAD REQUEST').code(400);
+        return h.response('BAD REQUEST').code(400).takeover();
       },
       params: {
         uuid: validate.string().guid({
