@@ -67,8 +67,8 @@
     "precommit-hook-eslint": "3.0.0"
   },
   "dependencies": {
-    "@ctt/crud-api": "0.3.0",
-    "@ctt/service-utils": "1.0.3",
+    "@ctt/crud-api": "*",
+    "@ctt/service-utils": "*",
     "babel-cli": "6.26.0",
     "babel-core": "6.26.3",
     "babel-plugin-transform-class-properties": "6.24.1",
