@@ -17,13 +17,4 @@ export default ({
       arg: 'two-factor-auth-window',
     },
   },
-  db: {
-    dump: {
-      doc: 'Mongodb data seed and dump path',
-      format: String,
-      default: '__migration__',
-      env: 'DB_SEED',
-      arg: 'db-seed',
-    },
-  },
 });
