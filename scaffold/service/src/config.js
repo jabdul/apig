@@ -8,22 +8,4 @@ export default ({
       arg: 'service-name',
     },
   },
-  twoFactorAuth: {
-    window: {
-      doc: 'Two factor authentication window',
-      format: Number,
-      default: 3,
-      env: 'TWO_FACTOR_AUTH_WINDOW',
-      arg: 'two-factor-auth-window',
-    },
-  },
-  db: {
-    dump: {
-      doc: 'Mongodb data seed and dump path',
-      format: String,
-      default: '__migration__',
-      env: 'DB_SEED',
-      arg: 'db-seed',
-    },
-  },
 });

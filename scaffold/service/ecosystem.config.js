@@ -10,6 +10,13 @@ module.exports = {
       }
     },
     {
+      name: 'acc-{{{scaffold_project_directory}}}',
+      script: 'lib/index.js',
+      env: {
+        NODE_ENV: 'acceptance'
+      }
+    },
+    {
       name: '{{{scaffold_project_directory}}}',
       script: 'lib/index.js',
       env: {
