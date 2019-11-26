@@ -8,13 +8,4 @@ export default ({
       arg: 'service-name',
     },
   },
-  twoFactorAuth: {
-    window: {
-      doc: 'Two factor authentication window',
-      format: Number,
-      default: 3,
-      env: 'TWO_FACTOR_AUTH_WINDOW',
-      arg: 'two-factor-auth-window',
-    },
-  },
 });
