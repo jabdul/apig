@@ -26,6 +26,7 @@ describe(`Routes: ${ROUTE_NAME}`, () => {
     email: jest.fn(),
     min: jest.fn(),
     max: jest.fn(),
+    empty: jest.fn(),
     number: jest.fn(),
     integer: jest.fn(),
     iso: jest.fn(),
@@ -71,6 +72,7 @@ describe(`Routes: ${ROUTE_NAME}`, () => {
   validate.binary.mockImplementation(() => validate);
   validate.integer.mockImplementation(() => validate);
   validate.default.mockImplementation(() => validate);
+  validate.empty.mockImplementation(() => validate);
   validate.email.mockImplementation(() => validate);
   validate.guid.mockImplementation(() => validate);
   validate.required.mockImplementation(() => validate);
