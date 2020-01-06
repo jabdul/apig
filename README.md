@@ -1,4 +1,3 @@
-[![CircleCI](https://circleci.com/gh/jabdul/apig.svg?style=svg)](https://circleci.com/gh/jabdul/apig)
 [![Coverage Status](https://coveralls.io/repos/github/jabdul/apig/badge.svg?branch=master)](https://coveralls.io/github/jabdul/apig?branch=master)
 
 apig
