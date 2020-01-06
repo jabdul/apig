@@ -1,7 +1,7 @@
+# apig
+
 [![CircleCI](https://circleci.com/gh/CraftTurf/apig.svg?style=svg)](https://circleci.com/gh/CraftTurf/apig)
 [![Coverage Status](https://coveralls.io/repos/github/jabdul/apig/badge.svg?branch=master)](https://coveralls.io/github/jabdul/apig?branch=master)
-
-===
 
 apig is the command-line interface tool for [crud-api](https://github.com/jabdul/crud-api).
 
