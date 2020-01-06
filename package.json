@@ -11,6 +11,7 @@
     "build:watch": "yarn build --watch",
     "clean": "concurrently 'rimraf node_modules' 'rimraf lib/*' 'yarn cache clean'",
     "lint": "eslint src",
+    "lint:ci": "eslint src --format junit -o test/reports/junit/js-lint-results.xml",
     "prepublish": "yarn build",
     "pretest": "yarn lint",
     "start": "node lib/index.js",
@@ -23,6 +24,10 @@
     "lint",
     "test"
   ],
+  "jest-junit": {
+    "outputDirectory": "./test/reports/junit",
+    "outputName": "./js-test-results.xml"
+  },
   "jest": {
     "testURL": "http://localhost/",
     "roots": [
@@ -77,6 +82,7 @@
     "eslint-plugin-import": "2.13.0",
     "eslint-plugin-jest": "21.20.2",
     "jest": "23.5.0",
+    "jest-junit": "10.0.0",
     "precommit-hook-eslint": "3.0.0"
   },
   "dependencies": {
