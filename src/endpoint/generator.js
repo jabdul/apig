@@ -62,4 +62,4 @@ export const generator = function({ endpoint, endpoints, title, destination }) {
   .catch(e => {
     console.log(e); // eslint-disable-line no-console
   });
-}
+};
