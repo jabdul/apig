@@ -25,11 +25,12 @@ const findAll = async ({ payload }) => {{{scaffold_entity_capitalise}}}.paginate
   {
     page: payload.pageid,
     limit: payload.limit,
+    lean: true,
     sort: { 'meta.created': 'desc', 'meta.updated': 'desc' }
   }
 );
 
-const findById = async ({ payload }) => {{{scaffold_entity_capitalise}}}.findOne({ uuid: payload.uuid });
+const findById = async ({ payload }) => {{{scaffold_entity_capitalise}}}.findOne({ uuid: payload.uuid }).lean();
 
 const removeById = async ({ payload }) => {{{scaffold_entity_capitalise}}}.updateOne(
   { uuid: payload.uuid },
