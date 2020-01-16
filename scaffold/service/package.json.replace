@@ -5,7 +5,7 @@
   "main": "lib/index.js",
   "scripts": {
     "build": "babel src -d lib --ignore *.test*.js",
-    "dev": "nodemon --delay 250ms --exec NODE_ENV=development babel-node -- src/index.js",
+    "dev": "nodemon",
     "dump": "babel-node -- src/persistence/mongoose/backup.js",
     "clean": "concurrently 'rimraf node_modules' 'rimraf lib/*' 'yarn cache clean'",
     "flow": "flow check --all",
