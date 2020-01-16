@@ -1,0 +1,8 @@
+{
+  "signal": "SIGTERM",
+  "env": {
+    "NODE_ENV": "development"
+  },
+  "ext": "js",
+  "exec": "babel-node -- src/index.js"
+}
