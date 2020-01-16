@@ -63,7 +63,7 @@
     "flow-bin": "0.78.0",
     "flow-typed": "2.5.1",
     "jest": "23.5.0",
-    "nodemon": "1.18.3",
+    "nodemon": "^2.0.1",
     "precommit-hook-eslint": "3.0.0"
   },
   "dependencies": {
