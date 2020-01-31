@@ -1,7 +1,7 @@
 import Scaffold from 'scaffold-generator';
 import capitalize from 'capitalize';
 import mustache from 'mustache';
-import path from 'path';
+import { resolve } from 'path';
 import { pickBy, startsWith } from 'ramda';
 import mkdirp from 'mkdirp';
 
@@ -29,7 +29,7 @@ export const questions = [
     type: 'input',
     name: 'destination',
     message: 'Endpopint installation destination',
-    default: () => path.resolve(__dirname, '../', './src')
+    default: () => resolve(__dirname, '../', './src')
   },
 ];
 
@@ -38,8 +38,10 @@ export const generator = function({ endpoint, endpoints, title, destination }) {
     if (err) throw err;
   });
 
-  const SCAFFOLD = path.resolve(__dirname, '../../', 'scaffold/endpoint');
+  const SCAFFOLD = resolve(__dirname, '../../', 'scaffold/endpoint');
+  const FACTORY = resolve(__dirname, '../../', 'scaffold/factories');
   const DEST_DIR = destination;
+  const TEST_PATH = resolve(DEST_DIR, '../test/factories', );
 
   mustache.escape = v => v;
 
@@ -50,12 +52,14 @@ export const generator = function({ endpoint, endpoints, title, destination }) {
         scaffold_entities: endpoints,
         scaffold_entity: endpoint,
         scaffold_entity_capitalise: title,
+        scaffold_factory: (title.toLowerCase())
       }}
     )},
     ignore: config.FILES_IGNORE,
     render: mustache.render,
   })
   .copy(SCAFFOLD, DEST_DIR)
+  .copy(FACTORY, TEST_PATH)
   .then(() => {
     console.log('done'); // eslint-disable-line no-console
   })
