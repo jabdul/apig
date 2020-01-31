@@ -57,6 +57,7 @@
     "babel-jest": "23.4.2",
     "concurrently": "3.6.1",
     "eslint": "5.3.0",
+    "factory-girl": "5.0.4",
     "eslint-config-airbnb": "17.1.0",
     "eslint-plugin-import": "2.13.0",
     "eslint-plugin-jest": "21.20.2",
