@@ -33,7 +33,7 @@ export const questions = [
   },
 ];
 
-export const generator = function({ endpoint, endpoints, title, destination }) {
+export const generator = function ({ endpoint, endpoints, title, destination }) {
   mkdirp(destination, (err) => {
     if (err) throw err;
   });
@@ -41,29 +41,33 @@ export const generator = function({ endpoint, endpoints, title, destination }) {
   const SCAFFOLD = resolve(__dirname, '../../', 'scaffold/endpoint');
   const FACTORY = resolve(__dirname, '../../', 'scaffold/factories');
   const DEST_DIR = destination;
-  const TEST_PATH = resolve(DEST_DIR, '../test/factories', );
+  const TEST_PATH = resolve(DEST_DIR, '../test/factories');
 
   mustache.escape = v => v;
 
-  new Scaffold({
-    data: {...pickBy(
-      (val, key) => startsWith('scaffold_', key),
-      { ...config, ...{
-        scaffold_entities: endpoints,
-        scaffold_entity: endpoint,
-        scaffold_entity_capitalise: title,
-        scaffold_factory: (title.toLowerCase())
-      }}
-    )},
+  const scaffold = new Scaffold({
+    data: {
+      ...pickBy(
+        (val, key) => startsWith('scaffold_', key),
+        {
+          ...config, ...{
+            scaffold_entities: endpoints,
+            scaffold_entity: endpoint,
+            scaffold_entity_capitalise: title,
+            scaffold_factory: (title.toLowerCase())
+          }
+        }
+      )
+    },
     ignore: config.FILES_IGNORE,
     render: mustache.render,
   })
-  .copy(SCAFFOLD, DEST_DIR)
-  .copy(FACTORY, TEST_PATH)
-  .then(() => {
-    console.log('done'); // eslint-disable-line no-console
-  })
-  .catch(e => {
-    console.log(e); // eslint-disable-line no-console
-  });
+
+  Promise.all([scaffold.copy(SCAFFOLD, DEST_DIR), scaffold.copy(FACTORY, TEST_PATH)])
+    .then(() => {
+      console.log('done'); // eslint-disable-line no-console
+    })
+    .catch(e => {
+      console.log(e); // eslint-disable-line no-console
+    });
 };
