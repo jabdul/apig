@@ -39,9 +39,9 @@ export const generator = function ({ endpoint, endpoints, title, destination }) 
   });
 
   const SCAFFOLD = resolve(__dirname, '../../', 'scaffold/endpoint');
-  const FACTORY = resolve(__dirname, '../../', 'scaffold/factories');
+  const TEST = resolve(__dirname, '../../', 'scaffold/test');
   const DEST_DIR = destination;
-  const TEST_PATH = resolve(DEST_DIR, '../test/factories');
+  const TEST_PATH = resolve(DEST_DIR, '../test');
 
   mustache.escape = v => v;
 
@@ -63,7 +63,7 @@ export const generator = function ({ endpoint, endpoints, title, destination }) 
     render: mustache.render,
   })
 
-  Promise.all([scaffold.copy(SCAFFOLD, DEST_DIR), scaffold.copy(FACTORY, TEST_PATH)])
+  Promise.all([scaffold.copy(SCAFFOLD, DEST_DIR), scaffold.copy(TEST, TEST_PATH)])
     .then(() => {
       console.log('done'); // eslint-disable-line no-console
     })
