@@ -46,9 +46,9 @@
     },
     "setupFiles": [
       "babel-polyfill",
-      "./test/jest/consoleErrorsThrowException.js"
+      "./test/utils/consoleErrorsThrowException.js"
     ],
-    "setupFilesAfterEnv": ['<rootDir>/test/jest/databaseCleaner.js']
+    "setupFilesAfterEnv": ['<rootDir>/test/utils/databaseCleaner.js']
   },
   "files": [
     "lib"
