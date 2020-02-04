@@ -1,7 +1,7 @@
 import { factory } from 'factory-girl';
 
 import {{{scaffold_entity_capitalise}}}Factory from '../../../../test/factories/{{{scaffold_factory}}}'; // eslint-disable-line no-unused-vars
-import queries from './queries'
+import queries from '../../src/persistence/mongoose/{{{scaffold_entity_capitalise}}}/queries'
 
 import { mongooseConnect, config } from '@ctt/crud-api';
 
