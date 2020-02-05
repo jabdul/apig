@@ -48,7 +48,7 @@
       "babel-polyfill",
       "./test/utils/consoleErrorsThrowException.js"
     ],
-    "setupFilesAfterEnv": ['<rootDir>/test/utils/databaseCleaner.js']
+    "setupFilesAfterEnv": ["<rootDir>/test/utils/testInitializers.js"]
   },
   "files": [
     "lib"
