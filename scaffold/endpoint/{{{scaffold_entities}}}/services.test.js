@@ -1,4 +1,4 @@
-import services from '../../src/{{{scaffold_entities}}}/services';
+import services from '../services';
 
 describe('Services: {{{scaffold_entities}}}', () => {
   const config = {

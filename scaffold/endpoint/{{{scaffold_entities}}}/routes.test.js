@@ -6,7 +6,7 @@ import create, {
   remove{{{scaffold_entity_capitalise}}},
   update{{{scaffold_entity_capitalise}}},
   findAll{{{scaffold_entity_capitalise}}}s,
-} from '../../src/{{{scaffold_entities}}}/routes';
+} from './routes';
 
 describe(`Routes: ${ROUTE_NAME}`, () => {
   const uid = 'dfa7fd57-5d6b-4563-b60e-6c9f78f19579';
