@@ -15,6 +15,12 @@ describe('Users', () => {
     await app.start();
   });
 
+  afterAll(async () => {
+    const db = await app.db;
+    await db.disconnect();
+    await app.stop({ timeout: 10 });
+  });
+
   describe('Create', () => {
     it('Create {{{scaffold_entity_capitalise}}}', async () => {
       const payload = await factory.attrs('{{{scaffold_entity_capitalise}}}');
