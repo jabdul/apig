@@ -51,7 +51,7 @@ describe('Users', () => {
 
       expect(response.statusCode).toBe(400);
       expect(response.statusMessage).toBe('Bad Request');
-      expect(response.headers['content-type']).toEqual('application/json; charset=utf-8');
+      expect(response.headers['content-type']).toEqual('application/hal+json');
     });
   });
 });
