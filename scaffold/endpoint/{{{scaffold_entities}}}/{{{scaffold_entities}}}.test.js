@@ -1,8 +1,8 @@
-import application from '../requestHelper';
+import application from '../../test/utils/requestHelper';
 import { factory } from 'factory-girl';
 
-import _ from '../factories/{{{scaffold_factory}}}'; // eslint-disable-line no-unused-vars
-import { ROUTE_NAME } from '../../src/{{{scaffold_entities}}}/routes';
+import _ from '../../test/factories/{{{scaffold_factory}}}'; // eslint-disable-line no-unused-vars
+import { ROUTE_NAME } from './routes';
 
 let app = null;
 const url =  `/${ROUTE_NAME}`
