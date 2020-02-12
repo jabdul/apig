@@ -1,14 +1,21 @@
 import { factory } from 'factory-girl';
 
-import {{{scaffold_entity_capitalise}}}Factory from '../../../../test/factories/{{{scaffold_factory}}}'; // eslint-disable-line no-unused-vars
+import _ from '../../../../test/factories/{{{scaffold_factory}}}'; // eslint-disable-line no-unused-vars
 import queries from './queries'
 
-import { mongooseConnect, config } from '@ctt/crud-api';
+import { mongooseConnect, dbConfig as config } from '@ctt/crud-api';
 
-const db = mongooseConnect(config);
-let {{{scaffold_factory}}}Queries = queries(db); // eslint-disable-line no-unused-vars
+const db, {{{scaffold_factory}}}Queries;
 
 describe('{{{scaffold_entity_capitalise}}} queries', () => {
+  beforeAll(async () => {
+    db = await mongooseConnect(config);
+    {{{scaffold_factory}}}Queries = queries(db);
+  });
+
+  afterAll(async () => {
+    await db.disconnect();
+  });
 
   describe('create', () => {
     it('can create a {{{scaffold_entity_capitalise}}}', async () => {
