@@ -29,12 +29,12 @@ export const questions = [
     type: 'input',
     name: 'destination',
     message: 'Endpopint installation destination',
-    default: () => resolve(__dirname, '../', './src')
+    default: () => resolve(__dirname, '../', './src'),
   },
 ];
 
 export const generator = function ({ endpoint, endpoints, title, destination }) {
-  mkdirp(destination, (err) => {
+  mkdirp(destination, err => {
     if (err) throw err;
   });
 
@@ -47,21 +47,19 @@ export const generator = function ({ endpoint, endpoints, title, destination }) 
 
   const scaffold = new Scaffold({
     data: {
-      ...pickBy(
-        (val, key) => startsWith('scaffold_', key),
-        {
-          ...config, ...{
-            scaffold_entities: endpoints,
-            scaffold_entity: endpoint,
-            scaffold_entity_capitalise: title,
-            scaffold_factory: (title.toLowerCase())
-          }
-        }
-      )
+      ...pickBy((val, key) => startsWith('scaffold_', key), {
+        ...config,
+        ...{
+          scaffold_entities: endpoints,
+          scaffold_entity: endpoint,
+          scaffold_entity_capitalise: title,
+          scaffold_factory: title.toLowerCase(),
+        },
+      }),
     },
     ignore: config.FILES_IGNORE,
     render: mustache.render,
-  })
+  });
 
   Promise.all([scaffold.copy(SCAFFOLD, DEST_DIR), scaffold.copy(TEST, TEST_PATH)])
     .then(() => {

@@ -1,4 +1,8 @@
-import type { JestMockT } from 'jest';
+import { test } from '@ctt/service-utils';
+
+const {
+  routes: { validate },
+} = test;
 
 import create, {
   ROUTE_NAME,
@@ -19,74 +23,17 @@ describe(`Routes: ${ROUTE_NAME}`, () => {
       findAll: jest.fn().mockReturnValue('{{{scaffold_entity_capitalise}}} entries fetched'),
     }
   };
-  const validate = {
-    string: jest.fn(),
-    default: jest.fn(),
-    boolean: jest.fn(),
-    email: jest.fn(),
-    min: jest.fn(),
-    max: jest.fn(),
-    empty: jest.fn(),
-    number: jest.fn(),
-    integer: jest.fn(),
-    iso: jest.fn(),
-    date: jest.fn(),
-    regex: jest.fn(),
-    valid: jest.fn(),
-    binary: jest.fn(),
-    encoding: jest.fn(),
-    try: jest.fn(),
-    guid: jest.fn(),
-    required: jest.fn(),
-    object: jest.fn().mockImplementation(() => ({
-      keys: jest.fn().mockReturnValue({
-        requiredKeys: jest.fn().mockReturnValue({
-          optionalKeys: jest.fn().mockReturnValue({})
-        })
-      }),
-      unknown: jest.fn().mockReturnValue({}),
-    })),
-    alternatives: jest.fn().mockImplementation(() => ({
-      try: jest.fn().mockReturnValue({})
-    })),
-    array: jest.fn().mockImplementation(() => ({
-      items: jest.fn().mockReturnValue({
-        min: jest.fn().mockReturnValue({
-          unique: jest.fn().mockReturnValue({})
-        }),
-      }),
-    }))
-  };
-  validate.string.mockImplementation(() => validate);
-  validate.boolean.mockImplementation(() => validate);
-  validate.min.mockImplementation(() => validate);
-  validate.max.mockImplementation(() => validate);
-  validate.number.mockImplementation(() => validate);
-  validate.iso.mockImplementation(() => validate);
-  validate.date.mockImplementation(() => validate);
-  validate.regex.mockImplementation(() => validate);
-  validate.valid.mockImplementation(() => validate);
-  validate.try.mockImplementation(() => validate);
-  validate.guid.mockImplementation(() => validate);
-  validate.encoding.mockImplementation(() => validate);
-  validate.binary.mockImplementation(() => validate);
-  validate.integer.mockImplementation(() => validate);
-  validate.default.mockImplementation(() => validate);
-  validate.empty.mockImplementation(() => validate);
-  validate.email.mockImplementation(() => validate);
-  validate.guid.mockImplementation(() => validate);
-  validate.required.mockImplementation(() => validate);
 
   describe(`POST /${ROUTE_NAME}`, () => {
     const router = create({ services, validate });
     const responseData = '{{{scaffold_entity_capitalise}}} entry created';
     const statusCode = 201;
     const contentType = 'application/hal+json';
-    let mockRequest: { log: JestMockT } = { log: null };
+    let mockRequest = { log: null };
     let mockResponse = null;
-    let mockData: JestMockT = null;
-    let mockStatusCode: JestMockT = null;
-    let mockContentType: JestMockT = null;
+    let mockData = null;
+    let mockStatusCode = null;
+    let mockContentType = null;
 
     beforeEach(() => {
       mockData = jest.fn();
@@ -140,11 +87,11 @@ describe(`Routes: ${ROUTE_NAME}`, () => {
     const responseData = '{{{scaffold_entity_capitalise}}} entry fetched';
     const statusCode = 200;
     const contentType = 'application/hal+json';
-    let mockRequest: { log: JestMockT } = { log: null };
+    let mockRequest = { log: null };
     let mockResponse = null;
-    let mockData: JestMockT = null;
-    let mockStatusCode: JestMockT = null;
-    let mockContentType: JestMockT = null;
+    let mockData = null;
+    let mockStatusCode = null;
+    let mockContentType = null;
 
     beforeEach(() => {
       mockData = jest.fn();
@@ -200,10 +147,10 @@ describe(`Routes: ${ROUTE_NAME}`, () => {
     const router = remove{{{scaffold_entity_capitalise}}}({ services, validate });
     const responseData = '{{{scaffold_entity_capitalise}}} entry deleted';
     const statusCode = 204;
-    let mockRequest: { log: JestMockT } = { log: null };
+    let mockRequest = { log: null };
     let mockResponse = null;
-    let mockData: JestMockT = null;
-    let mockStatusCode: JestMockT = null;
+    let mockData = null;
+    let mockStatusCode = null;
 
     beforeEach(() => {
       mockData = jest.fn();
@@ -251,10 +198,10 @@ describe(`Routes: ${ROUTE_NAME}`, () => {
     const router = update{{{scaffold_entity_capitalise}}}({ services, validate });
     const responseData = '{{{scaffold_entity_capitalise}}} entry modified';
     const statusCode = 200;
-    let mockRequest: { log: JestMockT } = { log: null };
+    let mockRequest = { log: null };
     let mockResponse = null;
-    let mockData: JestMockT = null;
-    let mockStatusCode: JestMockT = null;
+    let mockData = null;
+    let mockStatusCode = null;
 
     beforeEach(() => {
       mockData = jest.fn();
@@ -306,11 +253,11 @@ describe(`Routes: ${ROUTE_NAME}`, () => {
     const responseData = '{{{scaffold_entity_capitalise}}} entries fetched';
     const statusCode = 200;
     const contentType = 'application/hal+json';
-    let mockRequest: { log: JestMockT } = { log: null };
+    let mockRequest = { log: null };
     let mockResponse = null;
-    let mockData: JestMockT = null;
-    let mockStatusCode: JestMockT = null;
-    let mockContentType: JestMockT = null;
+    let mockData = null;
+    let mockStatusCode = null;
+    let mockContentType = null;
 
     beforeEach(() => {
       mockData = jest.fn();

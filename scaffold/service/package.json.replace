@@ -8,8 +8,6 @@
     "dev": "nodemon",
     "dump": "babel-node -- src/persistence/mongoose/backup.js",
     "clean": "concurrently 'rimraf node_modules' 'rimraf lib/*' 'yarn cache clean'",
-    "flow": "flow check --all",
-    "flow:dep": "flow-typed install",
     "lint": "eslint src",
     "postinstall": "[ \"$NODE_ENV\" == production ] && exit 0; yarn flow:dep",
     "prepublish": "yarn build",
@@ -48,7 +46,11 @@
       "babel-polyfill",
       "./test/utils/consoleErrorsThrowException.js"
     ],
-    "setupFilesAfterEnv": ["<rootDir>/test/utils/testInitializers.js"]
+    "setupFilesAfterEnv": [
+      "<rootDir>/test/utils/databaseCleaner.js",
+      "<rootDir>/test/utils/matchers.js"
+    ],
+    "testEnvironment": "node"
   },
   "files": [
     "lib"
@@ -58,15 +60,15 @@
     "babel-jest": "17.0.2",
     "concurrently": "3.6.1",
     "eslint": "5.3.0",
-    "eslint-config-airbnb": "17.1.0",
+    "eslint-config-prettier": "6.10.1",
     "eslint-plugin-import": "2.13.0",
     "eslint-plugin-jest": "21.20.2",
+    "eslint-plugin-prettier": "3.1.2",
     "factory-girl": "5.0.4",
-    "flow-bin": "0.78.0",
-    "flow-typed": "2.5.1",
     "jest": "24.9.0",
     "nodemon": "^2.0.1",
-    "precommit-hook-eslint": "3.0.0"
+    "precommit-hook-eslint": "3.0.0",
+    "prettier": "2.0.4"
   },
   "dependencies": {
     "@ctt/crud-api": "*",
@@ -74,7 +76,6 @@
     "@babel/cli": "7.8.4",
     "@babel/core": "7.8.4",
     "@babel/node": "7.8.4",
-    "@babel/plugin-transform-flow-strip-types": "7.8.3",
     "@babel/plugin-transform-runtime": "7.8.3",
     "@babel/preset-env": "7.8.4",
     "@babel/preset-flow": "7.8.3",

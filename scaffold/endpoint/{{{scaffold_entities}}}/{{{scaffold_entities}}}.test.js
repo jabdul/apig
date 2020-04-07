@@ -1,8 +1,11 @@
-import application from '../../test/utils/requestHelper';
+import { http } from '@ctt/service-utils';
 import { factory } from 'factory-girl';
+import application from '../../test/utils/requestHelper';
 
-import _ from '../../test/factories/{{{scaffold_factory}}}'; // eslint-disable-line no-unused-vars
+import '../../test/factories/{{{scaffold_factory}}}';
 import { ROUTE_NAME } from './routes';
+
+const { response: { CREATED, HAL_JSON_TYPE } } = http;
 
 let app = null;
 const url =  `/${ROUTE_NAME}`
@@ -30,9 +33,9 @@ describe('Users', () => {
         payload
       });
 
-      expect(response.statusCode).toBe(201);
+      expect(response.statusCode).toBe(CREATED.code);
       expect(response.statusMessage).toBe('Created');
-      expect(response.headers['content-type']).toEqual('application/hal+json');
+      expect(response.headers['content-type']).toEqual(HAL_JSON_TYPE);
 
       const {{{scaffold_factory}}} = parsedResponse(response)
       expect({{{scaffold_factory}}}).toHaveProperty('name')
@@ -42,16 +45,16 @@ describe('Users', () => {
     })
 
     it('Cannot create {{{scaffold_entity_capitalise}}}', async () => {
-      const payload = await factory.attrs('User', { firstname: null });
+      const payload = await factory.attrs('{{{scaffold_entity_capitalise}}}', { name: null });
       const response = await app.inject({
         method: 'POST',
         url,
         payload
       });
 
-      expect(response.statusCode).toBe(400);
+      expect(response.statusCode).toBe(BAD_REQUEST.code);
       expect(response.statusMessage).toBe('Bad Request');
-      expect(response.headers['content-type']).toEqual('application/hal+json');
+      expect(response.headers['content-type']).toEqual(HAL_JSON_TYPE);
     });
   });
 });

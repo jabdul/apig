@@ -1,6 +1,6 @@
 import { factory } from 'factory-girl';
 
-import _ from '../../../../test/factories/{{{scaffold_factory}}}'; // eslint-disable-line no-unused-vars
+import '../../../../test/factories/{{{scaffold_factory}}}';
 import queries from './queries'
 
 import { mongooseConnect, dbConfig as config } from '@ctt/crud-api';
@@ -44,7 +44,6 @@ describe('{{{scaffold_entity_capitalise}}} queries', () => {
         expect(errors['name']['path']).toBe('name');
         expect(errors['name']['kind']).toBe('required');
       }
-
     })
   })
 });

@@ -1,5 +1,8 @@
 {
-  "extends": "eslint:recommended",
+  "extends": [
+    "eslint:recommended",
+    "plugin:prettier/recommended"
+  ],
   "parser": "babel-eslint",
   "env": {
     "node": true,
@@ -9,6 +12,7 @@
     "eslint-plugin-import",
     "import",
     "jest",
+    "prettier"
   ],
   "globals": {
     "Promise": true,
@@ -16,11 +20,22 @@
   },
   "rules": {
     "comma-dangle": 0,
-    "new-cap": [2, {
-      "capIsNewExceptions": ["Immutable.Map"]
-    }],
-    "quotes": [2, "single"],
+    "new-cap": [
+      2,
+      {
+        "capIsNewExceptions": [
+          "Immutable.Map"
+        ]
+      }
+    ],
+    "quotes": [
+      2,
+      "single"
+    ],
     "strict": 0,
-    "import/no-extraneous-dependencies": [error, { devDependencies: true }]
+    "import/no-extraneous-dependencies": [error,
+      { devDependencies: true
+      }
+    ]
   }
 }

@@ -1,19 +1,37 @@
 {
-  "presets": [
-      ["@babel/preset-env", {
-          "targets": {
-            "node": "current"
-          }
-      }],
-    "@babel/preset-flow"
-  ],
-  "plugins": [
-    ["@babel/plugin-transform-runtime", {}],
-    "@babel/plugin-transform-flow-strip-types"
-  ],
+  "extends": "eslint:recommended",
+  "parser": "babel-eslint",
   "env": {
-    "development": {
-      "plugins": []
-    }
+    "node": true,
+    "jest": true
+  },
+  "plugins": [
+    "eslint-plugin-import",
+    "import",
+    "jest",
+  ],
+  "globals": {
+    "Promise": true,
+    "sandbox": true
+  },
+  "rules": {
+    "comma-dangle": 0,
+    "new-cap": [
+      2,
+      {
+        "capIsNewExceptions": [
+          "Immutable.Map"
+        ]
+      }
+    ],
+    "quotes": [
+      2,
+      "single"
+    ],
+    "strict": 0,
+    "import/no-extraneous-dependencies": [error,
+      { devDependencies: true
+      }
+    ]
   }
 }
