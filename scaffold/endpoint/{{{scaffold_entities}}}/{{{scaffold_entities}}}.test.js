@@ -5,7 +5,7 @@ import application from '../../test/utils/requestHelper';
 import '../../test/factories/{{{scaffold_factory}}}';
 import { ROUTE_NAME } from './routes';
 
-const { response: { CREATED, HAL_JSON_TYPE } } = http;
+const { response: { CREATED, HAL_JSON_TYPE , BAD_REQUEST} } = http;
 
 let app = null;
 const url =  `/${ROUTE_NAME}`

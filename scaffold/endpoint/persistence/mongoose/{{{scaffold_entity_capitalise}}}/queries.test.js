@@ -5,7 +5,7 @@ import queries from './queries'
 
 import { mongooseConnect, dbConfig as config } from '@ctt/crud-api';
 
-const db, {{{scaffold_factory}}}Queries;
+let db, {{{scaffold_factory}}}Queries;
 
 describe('{{{scaffold_entity_capitalise}}} queries', () => {
   beforeAll(async () => {
