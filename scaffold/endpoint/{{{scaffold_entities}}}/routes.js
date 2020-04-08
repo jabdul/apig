@@ -1,6 +1,11 @@
+import { http } from '@ctt/service-utils';
 import {
   makeMetaRequestPayloadSchema,
 } from '../utils/schemas';
+
+const {
+  response: { UNPROCESSABLE_ENTITY, BAD_REQUEST, NOT_FOUND, CREATED, OK, HAL_JSON_TYPE },
+} = http;
 
 export const ROUTE_NAME = '{{{scaffold_entities}}}';
 
@@ -33,7 +38,11 @@ export default ({
       headers: makeRequestHeaderSchema(validate),
       failAction: async (request, h, err) => {
         request.log([err]);
-        return h.response('BAD REQUEST').code(400).takeover();
+        return h
+          .response(BAD_REQUEST.message)
+          .code(BAD_REQUEST.code)
+          .type(HAL_JSON_TYPE)
+          .takeover();
       },
       payload: makeRequestPayloadSchema(validate)
         .requiredKeys(
@@ -54,11 +63,11 @@ export default ({
         .create({
           payload: request.payload, config, json
         }))
-        .code(201)
-        .type('application/hal+json');
+        .code(CREATED.code)
+        .type(HAL_JSON_TYPE);
     } catch (e) {
       request.log([e]);
-      response = h.response('UNPROCESSABLE ENTITY').code(422);
+      response = h.response(UNPROCESSABLE_ENTITY.message).code(UNPROCESSABLE_ENTITY.code);
     }
 
     return response;
@@ -76,7 +85,11 @@ export const find{{{scaffold_entity_capitalise}}} = ({
       headers: makeRequestHeaderSchema(validate),
       failAction: async (request, h, err) => {
         request.log([err]);
-        return h.response('BAD REQUEST').code(400).takeover();
+        return h
+          .response(BAD_REQUEST.message)
+          .code(BAD_REQUEST.code)
+          .type(HAL_JSON_TYPE)
+          .takeover();
       },
       params: {
         uuid: validate.string().guid({
@@ -95,11 +108,11 @@ export const find{{{scaffold_entity_capitalise}}} = ({
     try {
       response = h.response(await services[ROUTE_NAME]
         .findById({ payload, config, json }))
-        .code(200)
-        .type('application/hal+json');
+        .code(OK.code)
+        .type(HAL_JSON_TYPE);
     } catch (e) {
       request.log([e]);
-      response = h.response('NOT FOUND').code(404);
+      response = h.response(NOT_FOUND.message).code(NOT_FOUND.code);
     }
 
     return response;
@@ -117,7 +130,11 @@ export const findAll{{{scaffold_entity_capitalise}}}s = ({
       headers: makeRequestHeaderSchema(validate),
       failAction: async (request, h, err) => {
         request.log([err]);
-        return h.response('BAD REQUEST').code(400).takeover();
+        return h
+          .response(BAD_REQUEST.message)
+          .code(BAD_REQUEST.code)
+          .type(HAL_JSON_TYPE)
+          .takeover();
       },
       params: {
         pageid: validate.number().integer().min(1),
@@ -146,11 +163,11 @@ export const findAll{{{scaffold_entity_capitalise}}}s = ({
     try {
       response = h.response(await services[ROUTE_NAME]
         .findAll({ payload, config, json }))
-        .code(200)
-        .type('application/hal+json');
+        .code(OK.code)
+        .type(HAL_JSON_TYPE);
     } catch (e) {
       request.log([e]);
-      response = h.response('NOT FOUND').code(404);
+      response = h.response(NOT_FOUND.message).code(NOT_FOUND.code);
     }
 
     return response;
@@ -168,7 +185,11 @@ export const remove{{{scaffold_entity_capitalise}}} = ({
       headers: makeRequestHeaderSchema(validate),
       failAction: async (request, h, err) => {
         request.log([err]);
-        return h.response('BAD REQUEST').code(400).takeover();
+        return h
+          .response(BAD_REQUEST.message)
+          .code(BAD_REQUEST.code)
+          .type(HAL_JSON_TYPE)
+          .takeover();
       },
       params: {
         uuid: validate.string().guid({
@@ -189,7 +210,7 @@ export const remove{{{scaffold_entity_capitalise}}} = ({
         .removeById({ payload, config, json }))
         .code(204);
     } catch (e) {
-      response = h.response('UNPROCESSABLE ENTITY').code(422);
+      response = h.response(UNPROCESSABLE_ENTITY.message).code(UNPROCESSABLE_ENTITY.code);
     }
 
     return response;
@@ -207,7 +228,11 @@ export const update{{{scaffold_entity_capitalise}}} = ({
       headers: makeRequestHeaderSchema(validate),
       failAction: async (request, h, err) => {
         request.log([err]);
-        return h.response('BAD REQUEST').code(400).takeover();
+        return h
+          .response(BAD_REQUEST.message)
+          .code(BAD_REQUEST.code)
+          .type(HAL_JSON_TYPE)
+          .takeover();
       },
       params: {
         uuid: validate.string().guid({
@@ -230,10 +255,10 @@ export const update{{{scaffold_entity_capitalise}}} = ({
     try {
       response = h.response(await services[ROUTE_NAME]
         .updateById({ payload, config, json }))
-        .code(200);
+        .code(OK.code);
     } catch (e) {
       request.log([e]);
-      response = h.response('UNPROCESSABLE ENTITY').code(422);
+      response = h.response(UNPROCESSABLE_ENTITY.message).code(UNPROCESSABLE_ENTITY.code);
     }
 
     return response;

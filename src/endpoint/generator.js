@@ -1,7 +1,7 @@
 import Scaffold from 'scaffold-generator';
 import capitalize from 'capitalize';
 import mustache from 'mustache';
-import path from 'path';
+import { resolve } from 'path';
 import { pickBy, startsWith } from 'ramda';
 import mkdirp from 'mkdirp';
 
@@ -29,37 +29,43 @@ export const questions = [
     type: 'input',
     name: 'destination',
     message: 'Endpopint installation destination',
-    default: () => path.resolve(__dirname, '../', './src')
+    default: () => resolve(__dirname, '../', './src'),
   },
 ];
 
-export const generator = function({ endpoint, endpoints, title, destination }) {
-  mkdirp(destination, (err) => {
+export const generator = function ({ endpoint, endpoints, title, destination }) {
+  mkdirp(destination, err => {
     if (err) throw err;
   });
 
-  const SCAFFOLD = path.resolve(__dirname, '../../', 'scaffold/endpoint');
+  const SCAFFOLD = resolve(__dirname, '../../', 'scaffold/endpoint');
+  const TEST = resolve(__dirname, '../../', 'scaffold/test');
   const DEST_DIR = destination;
+  const TEST_PATH = resolve(DEST_DIR, '../test');
 
   mustache.escape = v => v;
 
-  new Scaffold({
-    data: {...pickBy(
-      (val, key) => startsWith('scaffold_', key),
-      { ...config, ...{
-        scaffold_entities: endpoints,
-        scaffold_entity: endpoint,
-        scaffold_entity_capitalise: title,
-      }}
-    )},
+  const scaffold = new Scaffold({
+    data: {
+      ...pickBy((val, key) => startsWith('scaffold_', key), {
+        ...config,
+        ...{
+          scaffold_entities: endpoints,
+          scaffold_entity: endpoint,
+          scaffold_entity_capitalise: title,
+          scaffold_factory: title.toLowerCase(),
+        },
+      }),
+    },
     ignore: config.FILES_IGNORE,
     render: mustache.render,
-  })
-  .copy(SCAFFOLD, DEST_DIR)
-  .then(() => {
-    console.log('done'); // eslint-disable-line no-console
-  })
-  .catch(e => {
-    console.log(e); // eslint-disable-line no-console
   });
+
+  Promise.all([scaffold.copy(SCAFFOLD, DEST_DIR), scaffold.copy(TEST, TEST_PATH)])
+    .then(() => {
+      console.log('done'); // eslint-disable-line no-console
+    })
+    .catch(e => {
+      console.log(e); // eslint-disable-line no-console
+    });
 };

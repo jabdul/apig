@@ -49,21 +49,12 @@ export const questions = [
     type: 'input',
     name: 'destination',
     message: 'Microservice installation destination path',
-    default: () => path.resolve(__dirname, '../', './src')
+    default: () => path.resolve(__dirname, '../', './src'),
   },
 ];
 
-export const generator = function({
-  name,
-  description,
-  author,
-  giturl,
-  directory,
-  mongodb,
-  port,
-  destination
-}) {
-  mkdirp(destination, (err) => {
+export const generator = function ({ name, description, author, giturl, directory, mongodb, port, destination }) {
+  mkdirp(destination, err => {
     if (err) throw err;
   });
 
@@ -73,26 +64,28 @@ export const generator = function({
   mustache.escape = v => v;
 
   new Scaffold({
-    data: {...pickBy(
-      (val, key) => startsWith('scaffold_', key),
-      { ...config, ...{
-        scaffold_project_name: name,
-        scaffold_project_description: description,
-        scaffold_project_author: author,
-        scaffold_project_git_url: giturl,
-        scaffold_project_directory: directory,
-        scaffold_mongodb_name: mongodb,
-        scaffold_service_port: port,
-      }}
-    )},
+    data: {
+      ...pickBy((val, key) => startsWith('scaffold_', key), {
+        ...config,
+        ...{
+          scaffold_project_name: name,
+          scaffold_project_description: description,
+          scaffold_project_author: author,
+          scaffold_project_git_url: giturl,
+          scaffold_project_directory: directory,
+          scaffold_mongodb_name: mongodb,
+          scaffold_service_port: port,
+        },
+      }),
+    },
     ignore: config.FILES_IGNORE,
     render: mustache.render,
   })
-  .copy(SCAFFOLD, DEST_DIR)
-  .then(() => {
-    console.log('done'); // eslint-disable-line no-console
-  })
-  .catch(e => {
-    console.log(e); // eslint-disable-line no-console
-  });
-}
+    .copy(SCAFFOLD, DEST_DIR)
+    .then(() => {
+      console.log('done'); // eslint-disable-line no-console
+    })
+    .catch(e => {
+      console.log(e); // eslint-disable-line no-console
+    });
+};
