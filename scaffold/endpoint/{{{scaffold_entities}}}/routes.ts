@@ -1,266 +1,243 @@
-import { http } from '@ctt/service-utils';
-import {
-  makeMetaRequestPayloadSchema,
-} from '../utils/schemas';
+import { http, service } from '@ctt/service-utils';
+import { makeMetaRequestPayloadSchema, validateObjectId } from '../utils/schemas';
+import { ServerRoute, ResponseObject } from 'hapi';
+import { RouteArgs } from '@ctt/crud-api';
+import { ObjectSchema, Root } from 'joi';
 
 const {
-  response: { UNPROCESSABLE_ENTITY, BAD_REQUEST, NOT_FOUND, CREATED, OK, HAL_JSON_TYPE },
+  response: { UNPROCESSABLE_ENTITY, BAD_REQUEST, NOT_FOUND, CREATED, OK, JSON_TYPE },
 } = http;
 
 export const ROUTE_NAME = '{{{scaffold_entities}}}';
 
-const options = {
-  log: { collect: true },
-  auth: 'jwt',
-  cors: {
-    origin: ['*'],
-    additionalHeaders: ['X-Requested-With', 'Origin'],
-  },
-};
-
-export const makeRequestPayloadSchema = validate => validate.object().keys({
+export const makeRequestPayloadSchema = (validate: Root): ObjectSchema => validate.object().keys({
   name: validate.string().max(30),
   meta: makeMetaRequestPayloadSchema(validate),
 });
 
-const makeRequestHeaderSchema = validate => validate.object({
+const makeRequestHeaderSchema = (validate: Root): ObjectSchema => validate.object({
   authorization: validate.string().required(),
 }).unknown();
 
-export default ({
-  services, config, validate, json
-}) => ({
+export default ({ services, config, json, validate }: RouteArgs): ServerRoute => ({
   method: 'POST',
   path: `/${ROUTE_NAME}`,
   options: {
-    ...options,
+    ...service.options.secureOption,
     validate: {
       headers: makeRequestHeaderSchema(validate),
-      failAction: async (request, h, err) => {
-        request.log([err]);
+      failAction: async (request, h, err): Promise<ResponseObject> => {
+        request.log('error', err);
         return h
           .response(BAD_REQUEST.message)
           .code(BAD_REQUEST.code)
-          .type(HAL_JSON_TYPE)
+          .type(JSON_TYPE)
           .takeover();
       },
       payload: makeRequestPayloadSchema(validate)
-        .requiredKeys(
-          'name'
-        )
-        .optionalKeys(
-          'meta'
-        )
+        .requiredKeys('domain', 'slug')
+        .optionalKeys('description', 'meta'),
     },
     tags: ['api'],
   },
-  handler: async (request, h) => {
+  handler: async (request, h): Promise<ResponseObject> => {
     request.log([`/${ROUTE_NAME}`]);
     let response;
 
     try {
-      response = h.response(await services[ROUTE_NAME]
-        .create({
-          payload: request.payload, config, json
-        }))
-        .code(CREATED.code)
-        .type(HAL_JSON_TYPE);
+      response = h
+        .response(
+          await services[ROUTE_NAME].create({
+            payload: request.payload,
+            config,
+            json,
+          }),
+        )
+        .code(CREATED.code);
     } catch (e) {
       request.log([e]);
-      response = h.response(UNPROCESSABLE_ENTITY.message).code(UNPROCESSABLE_ENTITY.code);
+      response = h
+        .response({ error: UNPROCESSABLE_ENTITY.message })
+        .code(UNPROCESSABLE_ENTITY.code);
     }
 
-    return response;
-  }
+    return response.type(JSON_TYPE);
+  },
 });
 
-export const find{{{scaffold_entity_capitalise}}} = ({
-  services, validate, config, json
-}) => ({
+export const find{{{scaffold_entity_capitalise}}} = ({ services, validate, json, config }: RouteArgs): ServerRoute => ({
   method: 'GET',
-  path: '/{{{scaffold_entities}}}/{uuid}',
+  path: '/{{{scaffold_entities}}}/{id}',
   options: {
-    ...options,
+    ...service.options.secureOption,
     validate: {
       headers: makeRequestHeaderSchema(validate),
-      failAction: async (request, h, err) => {
-        request.log([err]);
+      failAction: async (request, h, err): Promise<ResponseObject> => {
+        request.log('error', err);
         return h
           .response(BAD_REQUEST.message)
           .code(BAD_REQUEST.code)
-          .type(HAL_JSON_TYPE)
+          .type(JSON_TYPE)
           .takeover();
       },
       params: {
-        uuid: validate.string().guid({
-          version: ['uuidv4']
-        }),
+        id: validateObjectId(validate),
       },
     },
 
     tags: ['api'],
   },
-  handler: async (request, h) => {
-    const payload = { uuid: request.params.uuid };
+  handler: async (request, h): Promise<ResponseObject> => {
+    const payload = { id: request.params.id };
     request.log([`/${ROUTE_NAME}`]);
     let response;
 
     try {
-      response = h.response(await services[ROUTE_NAME]
-        .findById({ payload, config, json }))
-        .code(OK.code)
-        .type(HAL_JSON_TYPE);
+      response = h
+        .response(await services[ROUTE_NAME].findById({ payload, json, config }))
+        .code(OK.code);
     } catch (e) {
       request.log([e]);
       response = h.response(NOT_FOUND.message).code(NOT_FOUND.code);
     }
 
-    return response;
-  }
+    return response.type(JSON_TYPE);
+  },
 });
 
-export const findAll{{{scaffold_entity_capitalise}}}s = ({
-  services, validate, config, json
-}) => ({
+export const findAll{{{scaffold_entity_capitalise}}}s = ({ services, validate, config, json }: RouteArgs): ServerRoute => ({
   method: 'GET',
-  path: '/{{{scaffold_entities}}}/page/{pageid}',
+  path: '/{{{scaffold_entities}}}',
   options: {
-    ...options,
+    ...service.options.secureOption,
     validate: {
       headers: makeRequestHeaderSchema(validate),
-      failAction: async (request, h, err) => {
-        request.log([err]);
+      failAction: async (request, h, err): Promise<ResponseObject> => {
+        request.log('error', err);
         return h
           .response(BAD_REQUEST.message)
           .code(BAD_REQUEST.code)
-          .type(HAL_JSON_TYPE)
+          .type(JSON_TYPE)
           .takeover();
-      },
-      params: {
-        pageid: validate.number().integer().min(1),
       },
       query: {
         name: validate.string().max(30),
         from: validate.date().iso(),
         to: validate.date().iso(),
-        limit: validate.number().integer().min(1),
+        limit: validate
+          .number()
+          .integer()
+          .min(1),
+          page: validate
+          .number()
+          .integer()
+          .min(1),
       },
     },
 
     tags: ['api'],
   },
-  handler: async (request, h) => {
+  handler: async (request, h): Promise<ResponseObject> => {
     const payload = {
-      pageid: request.params.pageid,
-      name: request.query.name,
-      from: request.query.from,
-      to: request.query.to,
-      limit: request.query.limit,
+      ...(request.query as object)
     };
     request.log([`/${ROUTE_NAME}`]);
     let response;
 
     try {
-      response = h.response(await services[ROUTE_NAME]
-        .findAll({ payload, config, json }))
-        .code(OK.code)
-        .type(HAL_JSON_TYPE);
+      response = h
+        .response(await services[ROUTE_NAME].findAll({ payload, json, config }))
+        .code(OK.code);
     } catch (e) {
       request.log([e]);
       response = h.response(NOT_FOUND.message).code(NOT_FOUND.code);
     }
 
-    return response;
-  }
+    return response.type(JSON_TYPE);
+  },
 });
 
-export const remove{{{scaffold_entity_capitalise}}} = ({
-  services, validate, config, json
-}) => ({
+export const remove{{{scaffold_entity_capitalise}}} = ({ services, validate, config }: RouteArgs): ServerRoute => ({
   method: 'DELETE',
-  path: '/{{{scaffold_entities}}}/{uuid}',
+  path: '/{{{scaffold_entities}}}/{id}',
   options: {
-    ...options,
+    ...service.options.secureOption,
     validate: {
       headers: makeRequestHeaderSchema(validate),
-      failAction: async (request, h, err) => {
-        request.log([err]);
+      failAction: async (request, h, err): Promise<ResponseObject> => {
+        request.log('error', err);
         return h
           .response(BAD_REQUEST.message)
           .code(BAD_REQUEST.code)
-          .type(HAL_JSON_TYPE)
+          .type(JSON_TYPE)
           .takeover();
       },
       params: {
-        uuid: validate.string().guid({
-          version: ['uuidv4']
-        }),
+        id: validateObjectId(validate),
       },
     },
 
     tags: ['api'],
   },
-  handler: async (request, h) => {
-    const payload = { uuid: request.params.uuid };
+  handler: async (request, h): Promise<ResponseObject> => {
+    const payload = { id: request.params.id };
     request.log([`/${ROUTE_NAME}`]);
     let response;
 
     try {
-      response = h.response(await services[ROUTE_NAME]
-        .removeById({ payload, config, json }))
-        .code(204);
+      response = h.response(await services[ROUTE_NAME].removeById({ payload, config })).code(204);
     } catch (e) {
-      response = h.response(UNPROCESSABLE_ENTITY.message).code(UNPROCESSABLE_ENTITY.code);
+      response = h
+        .response({ error: UNPROCESSABLE_ENTITY.message })
+        .code(UNPROCESSABLE_ENTITY.code);
     }
 
-    return response;
-  }
+    return response.type(JSON_TYPE);
+  },
 });
 
-export const update{{{scaffold_entity_capitalise}}} = ({
-  services, validate, config, json
-}) => ({
+export const update{{{scaffold_entity_capitalise}}} = ({ services, validate, config }: RouteArgs): ServerRoute => ({
   method: 'PUT',
-  path: '/{{{scaffold_entities}}}/{uuid}',
+  path: '/{{{scaffold_entities}}}/{id}',
   options: {
-    ...options,
+    ...service.options.secureOption,
     validate: {
       headers: makeRequestHeaderSchema(validate),
-      failAction: async (request, h, err) => {
-        request.log([err]);
+      failAction: async (request, h, err): Promise<ResponseObject> => {
+        request.log('error', err);
         return h
           .response(BAD_REQUEST.message)
           .code(BAD_REQUEST.code)
-          .type(HAL_JSON_TYPE)
+          .type(JSON_TYPE)
           .takeover();
       },
       params: {
-        uuid: validate.string().guid({
-          version: ['uuidv4']
-        }),
+        id: validateObjectId(validate),
       },
       payload: makeRequestPayloadSchema(validate),
     },
 
     tags: ['api'],
   },
-  handler: async (request, h) => {
+  handler: async (request, h): Promise<ResponseObject> => {
     const payload = {
-      uuid: request.params.uuid,
-      name: request.payload.name,
+      ...(request.payload as object),
+      id: request.params.id,
     };
     request.log([`/${ROUTE_NAME}`]);
     let response;
 
     try {
-      response = h.response(await services[ROUTE_NAME]
-        .updateById({ payload, config, json }))
+      response = h
+        .response(await services[ROUTE_NAME].updateById({ payload, config }))
         .code(OK.code);
     } catch (e) {
       request.log([e]);
-      response = h.response(UNPROCESSABLE_ENTITY.message).code(UNPROCESSABLE_ENTITY.code);
+      response = h
+        .response({ error: UNPROCESSABLE_ENTITY.message })
+        .code(UNPROCESSABLE_ENTITY.code);
     }
 
-    return response;
-  }
+    return response.type(JSON_TYPE);
+  },
 });

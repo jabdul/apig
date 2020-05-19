@@ -5,12 +5,12 @@ import application from '../../test/utils/requestHelper';
 import '../../test/factories/{{{scaffold_factory}}}';
 import { ROUTE_NAME } from './routes';
 
-const { response: { CREATED, HAL_JSON_TYPE , BAD_REQUEST} } = http;
+const { response: { CREATED, JSON_TYPE , BAD_REQUEST} } = http;
 
 let app = null;
 const url =  `/${ROUTE_NAME}`
 
-const parsedResponse = ({ payload }) => JSON.parse(payload);
+const parsedResponse = ({ payload }): JSON => JSON.parse(payload);
 
 describe('Users', () => {
   beforeAll(async () => {
@@ -35,13 +35,13 @@ describe('Users', () => {
 
       expect(response.statusCode).toBe(CREATED.code);
       expect(response.statusMessage).toBe('Created');
-      expect(response.headers['content-type']).toEqual(HAL_JSON_TYPE);
+      expect(response.headers['content-type']).toEqual(JSON_TYPE);
 
       const {{{scaffold_factory}}} = parsedResponse(response)
       expect({{{scaffold_factory}}}).toHaveProperty('name')
-      expect({{{scaffold_factory}}}).toHaveProperty('uuid')
+      expect({{{scaffold_factory}}}).toHaveProperty('id')
       expect({{{scaffold_factory}}}['name']).toEqual(payload['name'])
-      expect({{{scaffold_factory}}}['uuid']).toBeValidUUID();
+      expect({{{scaffold_factory}}}['id']).toBeValidUUID();
     })
 
     it('Cannot create {{{scaffold_entity_capitalise}}}', async () => {
@@ -54,7 +54,7 @@ describe('Users', () => {
 
       expect(response.statusCode).toBe(BAD_REQUEST.code);
       expect(response.statusMessage).toBe('Bad Request');
-      expect(response.headers['content-type']).toEqual(HAL_JSON_TYPE);
+      expect(response.headers['content-type']).toEqual(JSON_TYPE);
     });
   });
 });

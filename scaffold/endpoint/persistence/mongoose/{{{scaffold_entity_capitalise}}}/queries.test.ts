@@ -1,7 +1,8 @@
 import { factory } from 'factory-girl';
 
 import '../../../../test/factories/{{{scaffold_factory}}}';
-import queries from './queries'
+import queries from './queries';
+import  { configFiles } from '../../../utils/loadconfig';
 
 import { mongooseConnect, dbConfig as config } from '@ctt/crud-api';
 
@@ -9,6 +10,7 @@ let db, {{{scaffold_factory}}}Queries;
 
 describe('{{{scaffold_entity_capitalise}}} queries', () => {
   beforeAll(async () => {
+    config.loadFile(configFiles);
     db = await mongooseConnect(config);
     {{{scaffold_factory}}}Queries = queries(db);
   });
@@ -26,7 +28,7 @@ describe('{{{scaffold_entity_capitalise}}} queries', () => {
       expect({{{scaffold_factory}}}).toBeDefined()
 
       expect({{{scaffold_factory}}}).toHaveProperty('name')
-      expect({{{scaffold_factory}}}).toHaveProperty('uuid')
+      expect({{{scaffold_factory}}}).toHaveProperty('id')
       expect({{{scaffold_factory}}}['name']).toEqual(payload['name'])
     });
 
