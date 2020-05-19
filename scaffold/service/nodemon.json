@@ -3,6 +3,6 @@
   "env": {
     "NODE_ENV": "development"
   },
-  "ext": "js",
-  "exec": "babel-node -- src/index.js"
+  "ext": "ts",
+  "exec": "ts-node -- src/index.ts"
 }
