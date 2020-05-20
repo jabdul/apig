@@ -5,7 +5,7 @@ ARG NODE_ENV
 ARG NPM_TOKEN
 ENV NODE_ENV=$NODE_ENV \
     SERVICE_PORT=$SERVICE_PORT \
-    APP_DIR="/usr/src/{{{scaffold_server_name}}}" \
+    APP_DIR="/usr/src/{{{scaffold_docker_path}}}" \
     YARN_CACHE="/tmp/ycache"
 
 RUN mkdir -p $APP_DIR
@@ -45,7 +45,7 @@ RUN yarn build
 FROM node:12.16.3-alpine as build
 
 # Create app directory
-ENV APP_DIR=/usr/src/api-medical-consultation \
+ENV APP_DIR=/usr/src/{{{scaffold_docker_path}}} \
 YARN_CACHE="/tmp/ycache" \
     NODE_ENV=$NODE_ENV \
     NPM_TOKEN=$NPM_TOKEN
@@ -80,7 +80,7 @@ ENV SERVICE_PORT={{{scaffold_service_port}}} \
     SERVICE_USER_ID=1001 \
     SERVICE_GROUP={{{scaffold_server_name}}} \
     SERVICE_GROUP_ID=1001 \
-    APP_DIR=/usr/src/{{{scaffold_server_name}}} \
+    APP_DIR=/usr/src/{{{scaffold_docker_path}}} \
     NODE_ENV=$NODE_ENV
 
 RUN mkdir -p $APP_DIR
