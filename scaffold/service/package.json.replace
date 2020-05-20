@@ -20,7 +20,7 @@
     "prettify:lib": "prettier --write 'lib/**'",
     "build:docker": "scripts/docker-build.sh",
     "docker:permission": "chmod -R +x scripts/*.sh",
-    "run:docker": "yarn docker:permission && yarn build:docker && scripts/docker-build.sh",
+    "run:docker": "yarn docker:permission && yarn build:docker && scripts/docker-run.sh",
     "pretest": "yarn lint",
     "seed": "ts-node -- src/persistence/mongoose/seed.ts",
     "start": "node lib/index.js",
