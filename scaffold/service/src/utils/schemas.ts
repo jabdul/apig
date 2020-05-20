@@ -48,13 +48,22 @@ export const arraySchema = (template: object): object => ({
   },
 });
 
-export const responseDocumentSchema = {
-  id: {
-    type: 'string',
+export const responseDocumentSchema = (template: object): object => ({
+  type: 'object',
+  properties: {
+    data: {
+      type: 'array',
+      items: {
+        ...template,
+        id: {
+          type: 'string',
+        },
+        ...metaResponseSchema,
+      },
+    },
+    ...errorResponseSchema,
   },
-  ...errorResponseSchema,
-  ...metaResponseSchema,
-};
+});
 
 export const validateObjectId = (validator: Root): StringSchema =>
   validator.string().regex(/\b[0-9a-fA-F]{24}\b/);

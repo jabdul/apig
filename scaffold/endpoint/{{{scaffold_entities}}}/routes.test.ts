@@ -6,10 +6,10 @@ const {
 
 import create, {
   ROUTE_NAME,
-  findResource,
-  removeResource,
-  updateResource,
-  findAllResources,
+  find{{{scaffold_entity_capitalise}}},
+  remove{{{scaffold_entity_capitalise}}},
+  update{{{scaffold_entity_capitalise}}},
+  findAll{{{scaffold_entity_capitalise}}}s,
 } from './routes';
 
 describe(`Routes: ${ROUTE_NAME}`, () => {
@@ -83,7 +83,7 @@ describe(`Routes: ${ROUTE_NAME}`, () => {
   });
 
   describe(`GET /${ROUTE_NAME}`, () => {
-    const router: any = findResource({ services, validate }); // eslint-disable-line @typescript-eslint/no-explicit-any
+    const router: any = find{{{scaffold_entity_capitalise}}}({ services, validate }); // eslint-disable-line @typescript-eslint/no-explicit-any
     const responseData = '{{{scaffold_entity_capitalise}}} entry fetched';
     const statusCode = 200;
     const contentType = 'application/json';
@@ -144,7 +144,7 @@ describe(`Routes: ${ROUTE_NAME}`, () => {
   });
 
   describe(`DELETE /${ROUTE_NAME}`, () => {
-    const router: any = removeResource({ services, validate }); // eslint-disable-line @typescript-eslint/no-explicit-any
+    const router: any = remove{{{scaffold_entity_capitalise}}}({ services, validate }); // eslint-disable-line @typescript-eslint/no-explicit-any
     const responseData = '{{{scaffold_entity_capitalise}}} entry deleted';
     const statusCode = 204;
     let mockRequest = { log: null, params: null };
@@ -196,7 +196,7 @@ describe(`Routes: ${ROUTE_NAME}`, () => {
   });
 
   describe(`PUT /${ROUTE_NAME}`, () => {
-    const router: any = updateResource({ services, validate }); // eslint-disable-line @typescript-eslint/no-explicit-any
+    const router: any = update{{{scaffold_entity_capitalise}}}({ services, validate }); // eslint-disable-line @typescript-eslint/no-explicit-any
     const responseData = '{{{scaffold_entity_capitalise}}} entry modified';
     const statusCode = 200;
     let mockRequest = { log: null, params: null, payload: null };
@@ -250,12 +250,12 @@ describe(`Routes: ${ROUTE_NAME}`, () => {
     });
   });
 
-  describe('GET /{{{scaffold_entities}}}', () => {
-    const router: any = findAllResources({ services, validate }); // eslint-disable-line @typescript-eslint/no-explicit-any
+  describe('GET /{{{scaffold_entities}}}/page/{pageid}', () => {
+    const router: any = findAll{{{scaffold_entity_capitalise}}}s({ services, validate }); // eslint-disable-line @typescript-eslint/no-explicit-any
     const responseData = '{{{scaffold_entity_capitalise}}} entries fetched';
     const statusCode = 200;
     const contentType = 'application/json';
-    let mockRequest = { log: null, query: null };
+    let mockRequest = { log: null, params: null, query: null };
     let mockResponse = null;
     let mockData = null;
     let mockStatusCode = null;
@@ -276,9 +276,11 @@ describe(`Routes: ${ROUTE_NAME}`, () => {
       mockContentType.mockImplementation(() => mockResponse);
       mockRequest = {
         log: jest.fn(),
+        params: jest.fn().mockReturnValue({
+          pageid: 1,
+        }),
         query: jest.fn().mockReturnValue({
           name: 'name',
-          page: 1,
           from: '2018-10-27T22:15:04.417Z',
           to: '2018-12-29T20:04:06.313Z',
           limit: 10,
@@ -286,16 +288,15 @@ describe(`Routes: ${ROUTE_NAME}`, () => {
       };
     });
 
-    it('sets HTTP method GET on /{{{scaffold_entities}}} path', () => {
+    it('sets HTTP method GET on /{{{scaffold_entities}}}/page/{pageid} path', () => {
       expect(router.method).toBe('GET');
-      expect(router.path).toBe('/{{{scaffold_entities}}}');
+      expect(router.path).toBe('/{{{scaffold_entities}}}/page/{pageid}');
     });
 
     it('sets validation on query params', () => {
       const { query } = router.options.validate;
-      expect(query.from).toBeDefined();
       expect(query.name).toBeDefined();
-      expect(query.page).toBeDefined();
+      expect(query.from).toBeDefined();
       expect(query.to).toBeDefined();
       expect(query.limit).toBeDefined();
     });

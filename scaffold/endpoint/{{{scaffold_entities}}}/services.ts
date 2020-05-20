@@ -1,8 +1,8 @@
 import tmplJson from './parsers/json';
 import { Dict, Crud, ServiceArgs } from '@ctt/crud-api';
-import { {{{scaffold_entities}}}I } from '../persistence/mongoose/{{{scaffold_entities}}}/model';
+import { {{{scaffold_entity_capitalise}}}I } from '../persistence/mongoose/{{{scaffold_entity_capitalise}}}/model';
 import { PaginateResult } from 'mongoose';
-import { arraySchema } from '../utils/schemas';
+import { responseDocumentSchema } from '../utils/schemas';
 
 const create = async ({ db, payload, config, json }: ServiceArgs): Promise<string> => {
   const {{{scaffold_entity}}} = await db.{{{scaffold_entities}}}.create({ payload, config });
@@ -11,7 +11,7 @@ const create = async ({ db, payload, config, json }: ServiceArgs): Promise<strin
     throw Error({{{scaffold_entity}}});
   }
 
-  return json(tmplJson)({{{scaffold_entity}}});
+  return json(responseDocumentSchema(tmplJson))({ data: [{{{scaffold_entity}}}] });
 };
 
 const findById = async ({ db, payload, config, json }: ServiceArgs): Promise<string> => {
@@ -21,11 +21,11 @@ const findById = async ({ db, payload, config, json }: ServiceArgs): Promise<str
     throw Error({{{scaffold_entity}}});
   }
 
-  return json(tmplJson)({{{scaffold_entity}}});
+  return json(responseDocumentSchema(tmplJson))({ data: [{{{scaffold_entity}}}] });
 };
 
 const findAll = async ({ db, payload, config, json }: ServiceArgs): Promise<string> => {
-  const {{{scaffold_entities}}} = (await db.{{{scaffold_entities}}}.findAll({ payload, config })) as PaginateResult<{{{scaffold_entities}}}I>;
+  const {{{scaffold_entities}}} = (await db.{{{scaffold_entities}}}.findAll({ payload, config })) as PaginateResult<{{{scaffold_entity_capitalise}}}I>;
 
   if (!{{{scaffold_entities}}}) {
     throw Error(`${{{{scaffold_entities}}}}`);
@@ -37,7 +37,7 @@ const findAll = async ({ db, payload, config, json }: ServiceArgs): Promise<stri
 
   const { docs } = {{{scaffold_entities}}};
 
-  return json(arraySchema(tmplJson))(docs);
+  return json(responseDocumentSchema(tmplJson))({ data: docs });
 };
 
 const removeById = async ({ db, payload, config }: ServiceArgs): Promise<void> => {

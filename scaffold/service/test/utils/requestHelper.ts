@@ -27,4 +27,10 @@ export const bearerToken = async (): Promise<Map<string>> => {
   return { authorization: token };
 };
 
+export const parsedSingleResponse = ({ payload }): object | any => JSON.parse(payload)['data'][0];
+
 export const parsedResponse = ({ payload }): object | any => JSON.parse(payload);
+
+export const parsedArrayResponse = ({ payload }): object | any => JSON.parse(payload)['data'];
+
+export const parsedErrorResponse = ({ payload }): object | any => JSON.parse(payload)['error'];

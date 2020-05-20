@@ -1,8 +1,13 @@
 import { http, service } from '@ctt/service-utils';
-import { makeMetaRequestPayloadSchema, validateObjectId } from '../utils/schemas';
+import {
+  makeMetaRequestPayloadSchema,
+  validateObjectId,
+  responseDocumentSchema,
+} from '../utils/schemas';
 import { ServerRoute, ResponseObject } from 'hapi';
 import { RouteArgs } from '@ctt/crud-api';
 import { ObjectSchema, Root } from 'joi';
+import tmplJson from './parsers/json';
 
 const {
   response: { UNPROCESSABLE_ENTITY, BAD_REQUEST, NOT_FOUND, CREATED, OK, JSON_TYPE },
@@ -10,14 +15,21 @@ const {
 
 export const ROUTE_NAME = '{{{scaffold_entities}}}';
 
-export const makeRequestPayloadSchema = (validate: Root): ObjectSchema => validate.object().keys({
-  name: validate.string().max(30),
-  meta: makeMetaRequestPayloadSchema(validate),
-});
+export const makeRequestPayloadSchema = (validate: Root): ObjectSchema =>
+  validate.object().keys({
+    name: validate
+      .string()
+      .min(1)
+      .required(),
+    meta: makeMetaRequestPayloadSchema(validate),
+  });
 
-const makeRequestHeaderSchema = (validate: Root): ObjectSchema => validate.object({
-  authorization: validate.string().required(),
-}).unknown();
+const makeRequestHeaderSchema = (validate: Root): ObjectSchema =>
+  validate
+    .object({
+      authorization: validate.string().required(),
+    })
+    .unknown();
 
 export default ({ services, config, json, validate }: RouteArgs): ServerRoute => ({
   method: 'POST',
@@ -28,15 +40,22 @@ export default ({ services, config, json, validate }: RouteArgs): ServerRoute =>
       headers: makeRequestHeaderSchema(validate),
       failAction: async (request, h, err): Promise<ResponseObject> => {
         request.log('error', err);
+
+        const { code } = BAD_REQUEST;
+
         return h
-          .response(BAD_REQUEST.message)
-          .code(BAD_REQUEST.code)
+          .response(
+            json(responseDocumentSchema(tmplJson))({
+              error: { message: 'Validation Error', code },
+            }),
+          )
+          .code(code)
           .type(JSON_TYPE)
           .takeover();
       },
       payload: makeRequestPayloadSchema(validate)
-        .requiredKeys('domain', 'slug')
-        .optionalKeys('description', 'meta'),
+        .requiredKeys('name')
+        .optionalKeys('meta'),
     },
     tags: ['api'],
   },
@@ -56,9 +75,15 @@ export default ({ services, config, json, validate }: RouteArgs): ServerRoute =>
         .code(CREATED.code);
     } catch (e) {
       request.log([e]);
+      const { code, message } = UNPROCESSABLE_ENTITY;
+
       response = h
-        .response({ error: UNPROCESSABLE_ENTITY.message })
-        .code(UNPROCESSABLE_ENTITY.code);
+        .response(
+          json(responseDocumentSchema(tmplJson))({
+            error: { message, code },
+          }),
+        )
+        .code(code);
     }
 
     return response.type(JSON_TYPE);
@@ -74,9 +99,15 @@ export const find{{{scaffold_entity_capitalise}}} = ({ services, validate, json,
       headers: makeRequestHeaderSchema(validate),
       failAction: async (request, h, err): Promise<ResponseObject> => {
         request.log('error', err);
+        const { code, message } = BAD_REQUEST;
+
         return h
-          .response(BAD_REQUEST.message)
-          .code(BAD_REQUEST.code)
+          .response(
+            json(responseDocumentSchema(tmplJson))({
+              error: { message, code },
+            }),
+          )
+          .code(code)
           .type(JSON_TYPE)
           .takeover();
       },
@@ -98,7 +129,15 @@ export const find{{{scaffold_entity_capitalise}}} = ({ services, validate, json,
         .code(OK.code);
     } catch (e) {
       request.log([e]);
-      response = h.response(NOT_FOUND.message).code(NOT_FOUND.code);
+      const { code, message } = NOT_FOUND;
+
+      response = h
+        .response(
+          json(responseDocumentSchema(tmplJson))({
+            error: { message, code },
+          }),
+        )
+        .code(code);
     }
 
     return response.type(JSON_TYPE);
@@ -107,28 +146,36 @@ export const find{{{scaffold_entity_capitalise}}} = ({ services, validate, json,
 
 export const findAll{{{scaffold_entity_capitalise}}}s = ({ services, validate, config, json }: RouteArgs): ServerRoute => ({
   method: 'GET',
-  path: '/{{{scaffold_entities}}}',
+  path: '/{{{scaffold_entities}}}/page/{pageid}',
   options: {
     ...service.options.secureOption,
     validate: {
       headers: makeRequestHeaderSchema(validate),
       failAction: async (request, h, err): Promise<ResponseObject> => {
         request.log('error', err);
+        const { code, message } = BAD_REQUEST;
+
         return h
-          .response(BAD_REQUEST.message)
-          .code(BAD_REQUEST.code)
+          .response(
+            json(responseDocumentSchema(tmplJson))({
+              error: { message, code },
+            }),
+          )
+          .code(code)
           .type(JSON_TYPE)
           .takeover();
+      },
+      params: {
+        pageid: validate
+          .number()
+          .integer()
+          .min(1),
       },
       query: {
         name: validate.string().max(30),
         from: validate.date().iso(),
         to: validate.date().iso(),
         limit: validate
-          .number()
-          .integer()
-          .min(1),
-          page: validate
           .number()
           .integer()
           .min(1),
@@ -139,7 +186,11 @@ export const findAll{{{scaffold_entity_capitalise}}}s = ({ services, validate, c
   },
   handler: async (request, h): Promise<ResponseObject> => {
     const payload = {
-      ...(request.query as object)
+      pageid: request.params.pageid,
+      name: request.query.name,
+      from: request.query.from,
+      to: request.query.to,
+      limit: request.query.limit,
     };
     request.log([`/${ROUTE_NAME}`]);
     let response;
@@ -150,14 +201,22 @@ export const findAll{{{scaffold_entity_capitalise}}}s = ({ services, validate, c
         .code(OK.code);
     } catch (e) {
       request.log([e]);
-      response = h.response(NOT_FOUND.message).code(NOT_FOUND.code);
+      const { code, message } = NOT_FOUND;
+
+      response = h
+        .response(
+          json(responseDocumentSchema(tmplJson))({
+            error: { message, code },
+          }),
+        )
+        .code(code);
     }
 
     return response.type(JSON_TYPE);
   },
 });
 
-export const remove{{{scaffold_entity_capitalise}}} = ({ services, validate, config }: RouteArgs): ServerRoute => ({
+export const remove{{{scaffold_entity_capitalise}}} = ({ services, validate, config, json }: RouteArgs): ServerRoute => ({
   method: 'DELETE',
   path: '/{{{scaffold_entities}}}/{id}',
   options: {
@@ -166,9 +225,15 @@ export const remove{{{scaffold_entity_capitalise}}} = ({ services, validate, con
       headers: makeRequestHeaderSchema(validate),
       failAction: async (request, h, err): Promise<ResponseObject> => {
         request.log('error', err);
+        const { code, message } = BAD_REQUEST;
+
         return h
-          .response(BAD_REQUEST.message)
-          .code(BAD_REQUEST.code)
+          .response(
+            json(responseDocumentSchema(tmplJson))({
+              error: { message, code },
+            }),
+          )
+          .code(code)
           .type(JSON_TYPE)
           .takeover();
       },
@@ -187,16 +252,22 @@ export const remove{{{scaffold_entity_capitalise}}} = ({ services, validate, con
     try {
       response = h.response(await services[ROUTE_NAME].removeById({ payload, config })).code(204);
     } catch (e) {
+      const { code, message } = UNPROCESSABLE_ENTITY;
+
       response = h
-        .response({ error: UNPROCESSABLE_ENTITY.message })
-        .code(UNPROCESSABLE_ENTITY.code);
+        .response(
+          json(responseDocumentSchema(tmplJson))({
+            error: { message, code },
+          }),
+        )
+        .code(code);
     }
 
     return response.type(JSON_TYPE);
   },
 });
 
-export const update{{{scaffold_entity_capitalise}}} = ({ services, validate, config }: RouteArgs): ServerRoute => ({
+export const update{{{scaffold_entity_capitalise}}} = ({ services, validate, config, json }: RouteArgs): ServerRoute => ({
   method: 'PUT',
   path: '/{{{scaffold_entities}}}/{id}',
   options: {
@@ -205,9 +276,15 @@ export const update{{{scaffold_entity_capitalise}}} = ({ services, validate, con
       headers: makeRequestHeaderSchema(validate),
       failAction: async (request, h, err): Promise<ResponseObject> => {
         request.log('error', err);
+        const { code, message } = BAD_REQUEST;
+
         return h
-          .response(BAD_REQUEST.message)
-          .code(BAD_REQUEST.code)
+          .response(
+            json(responseDocumentSchema(tmplJson))({
+              error: { message, code },
+            }),
+          )
+          .code(code)
           .type(JSON_TYPE)
           .takeover();
       },
@@ -233,9 +310,15 @@ export const update{{{scaffold_entity_capitalise}}} = ({ services, validate, con
         .code(OK.code);
     } catch (e) {
       request.log([e]);
+      const { code, message } = UNPROCESSABLE_ENTITY;
+
       response = h
-        .response({ error: UNPROCESSABLE_ENTITY.message })
-        .code(UNPROCESSABLE_ENTITY.code);
+        .response(
+          json(responseDocumentSchema(tmplJson))({
+            error: { message, code },
+          }),
+        )
+        .code(code);
     }
 
     return response.type(JSON_TYPE);
