@@ -62,7 +62,9 @@ export const generator = function ({ name, description, author, giturl, director
   const SCAFFOLD = path.resolve(__dirname, '../../', 'scaffold/service');
   const DEST_DIR = path.resolve(destination, directory);
 
-  const dockerPath = /\b([a-z0-9-]*(?<=\/)[/a-z0-9-]+)\b/.test(name) ? /\b([a-z0-9-]*(?<=\/)[/a-z0-9-]+)\b/.exec(name)[0] : name;
+  const dockerPath = /\b([a-z0-9-]*(?<=\/)[/a-z0-9-]+)\b/.test(name)
+    ? /\b([a-z0-9-]*(?<=\/)[/a-z0-9-]+)\b/.exec(name)[0]
+    : name;
   const serverName = capitalize(dockerPath);
 
   new Scaffold({
