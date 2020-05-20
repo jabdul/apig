@@ -48,17 +48,21 @@ export const arraySchema = (template: object): object => ({
   },
 });
 
-export const responseDocumentSchema = (template: object): object => ({
+export const responseDocumentSchema = (template): object => ({
   type: 'object',
   properties: {
     data: {
       type: 'array',
       items: {
-        ...template,
-        id: {
-          type: 'string',
+        type: 'object',
+        required: template.required,
+        properties: {
+          ...template.properties,
+          id: {
+            type: 'string',
+          },
+          ...metaResponseSchema,
         },
-        ...metaResponseSchema,
       },
     },
     ...errorResponseSchema,

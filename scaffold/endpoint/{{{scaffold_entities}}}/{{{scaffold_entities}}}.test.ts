@@ -6,6 +6,8 @@ import application, {
 } from '../../test/utils/requestHelper';
 
 import '../../test/factories/{{{scaffold_factory}}}';
+import { verify{{{scaffold_entity_capitalise}}}, verifyResponse } from '../../test/helpers/{{{scaffold_entities}}}';
+
 import { ROUTE_NAME } from './routes';
 
 const { response: { CREATED, JSON_TYPE , BAD_REQUEST} } = http;
