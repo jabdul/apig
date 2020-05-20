@@ -1,16 +1,19 @@
 import { http } from '@ctt/service-utils';
 import { factory } from 'factory-girl';
-import application from '../../test/utils/requestHelper';
+import application, {
+  parsedSingleResponse,
+  parsedErrorResponse,
+} from '../../test/utils/requestHelper';
 
 import '../../test/factories/{{{scaffold_factory}}}';
+import { verify{{{scaffold_entity_capitalise}}}, verifyResponse } from '../../test/helpers/{{{scaffold_entities}}}';
+
 import { ROUTE_NAME } from './routes';
 
-const { response: { CREATED, HAL_JSON_TYPE , BAD_REQUEST} } = http;
+const { response: { CREATED, JSON_TYPE , BAD_REQUEST} } = http;
 
 let app = null;
 const url =  `/${ROUTE_NAME}`
-
-const parsedResponse = ({ payload }) => JSON.parse(payload);
 
 describe('Users', () => {
   beforeAll(async () => {
@@ -24,37 +27,43 @@ describe('Users', () => {
     await app.stop({ timeout: 10 });
   });
 
+
   describe('Create', () => {
     it('Create {{{scaffold_entity_capitalise}}}', async () => {
       const payload = await factory.attrs('{{{scaffold_entity_capitalise}}}');
       const response = await app.inject({
         method: 'POST',
         url,
-        payload
+        payload,
       });
 
       expect(response.statusCode).toBe(CREATED.code);
       expect(response.statusMessage).toBe('Created');
-      expect(response.headers['content-type']).toEqual(HAL_JSON_TYPE);
+      expect(response.headers['content-type']).toMatch(JSON_TYPE);
 
-      const {{{scaffold_factory}}} = parsedResponse(response)
-      expect({{{scaffold_factory}}}).toHaveProperty('name')
-      expect({{{scaffold_factory}}}).toHaveProperty('uuid')
-      expect({{{scaffold_factory}}}['name']).toEqual(payload['name'])
-      expect({{{scaffold_factory}}}['uuid']).toBeValidUUID();
-    })
+      const {{{scaffold_entity_capitalise}}} = parsedSingleResponse(response);
+
+      verify{{{scaffold_entity_capitalise}}}({{{scaffold_entity_capitalise}}});
+
+      verifyResponse({ {{{scaffold_entity_capitalise}}}, payload });
+      expect({{{scaffold_entity_capitalise}}}.id).toBeValidObjectId();
+    });
 
     it('Cannot create {{{scaffold_entity_capitalise}}}', async () => {
       const payload = await factory.attrs('{{{scaffold_entity_capitalise}}}', { name: null });
       const response = await app.inject({
         method: 'POST',
         url,
-        payload
+        payload,
       });
 
       expect(response.statusCode).toBe(BAD_REQUEST.code);
       expect(response.statusMessage).toBe('Bad Request');
-      expect(response.headers['content-type']).toEqual(HAL_JSON_TYPE);
+      expect(response.headers['content-type']).toMatch(JSON_TYPE);
+
+      const res = parsedErrorResponse(response);
+      expect(res).toHaveProperty('message');
+      expect(res.message).toBe(BAD_REQUEST.message);
     });
   });
 });
