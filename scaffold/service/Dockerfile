@@ -3,6 +3,7 @@ FROM node:12.16.3-alpine as ts-build
 # Arguments
 ARG NODE_ENV
 ARG NPM_TOKEN
+ARG SERVICE_PORT
 ENV NODE_ENV=$NODE_ENV \
     SERVICE_PORT=$SERVICE_PORT \
     APP_DIR="/usr/src/{{{scaffold_docker_path}}}" \
@@ -48,7 +49,8 @@ FROM node:12.16.3-alpine as build
 ENV APP_DIR=/usr/src/{{{scaffold_docker_path}}} \
 YARN_CACHE="/tmp/ycache" \
     NODE_ENV=$NODE_ENV \
-    NPM_TOKEN=$NPM_TOKEN
+    NPM_TOKEN=$NPM_TOKEN \
+    SERVICE_PORT=$SERVICE_PORT
 
 RUN mkdir -p $APP_DIR
 RUN mkdir -p $YARN_CACHE
@@ -73,9 +75,10 @@ FROM node:12.16.2-alpine
 
 # Arguments
 ARG NODE_ENV
+ARG SERVICE_PORT
 
 # Configuration
-ENV SERVICE_PORT={{{scaffold_service_port}}} \
+ENV SERVICE_PORT=$SERVICE_PORT \
     SERVICE_USER={{{scaffold_server_name}}} \
     SERVICE_USER_ID=1001 \
     SERVICE_GROUP={{{scaffold_server_name}}} \
