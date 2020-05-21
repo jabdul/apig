@@ -115,13 +115,13 @@ export default (): Promise<Server> =>
       auth: false,
       tags: {},
       info: {
-        title: {{{scaffold_project_name}}},
-        description: {{{scaffold_project_description}}},
+        title: '{{{scaffold_project_name}}}',
+        description: '{{{scaffold_project_description}}}',
         version: '0.0.1',
       },
     },
     swaggerUiOptions: {
-      title: {{{scaffold_project_name}}},
+      title: '{{{scaffold_project_name}}}',
       path: '/docs',
       authorization: false,
       auth: false,
