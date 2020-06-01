@@ -57,7 +57,7 @@ export default ({ services, config, json, validate }: RouteArgs): ServerRoute =>
         .requiredKeys('name')
         .optionalKeys('meta'),
     },
-    tags: ['api'],
+    tags: ['{{{scaffold_entities}}}'],
   },
   handler: async (request, h): Promise<ResponseObject> => {
     request.log([`/${ROUTE_NAME}`]);
@@ -116,7 +116,7 @@ export const find{{{scaffold_entity_capitalise}}} = ({ services, validate, json,
       },
     },
 
-    tags: ['api'],
+    tags: ['{{{scaffold_entities}}}'],
   },
   handler: async (request, h): Promise<ResponseObject> => {
     const payload = { id: request.params.id };
@@ -181,7 +181,7 @@ export const findAll{{{scaffold_entity_capitalise}}}s = ({ services, validate, c
       },
     },
 
-    tags: ['api'],
+    tags: ['{{{scaffold_entities}}}'],
   },
   handler: async (request, h): Promise<ResponseObject> => {
     const payload = {
@@ -237,7 +237,7 @@ export const remove{{{scaffold_entity_capitalise}}} = ({ services, validate, con
       },
     },
 
-    tags: ['api'],
+    tags: ['{{{scaffold_entities}}}'],
   },
   handler: async (request, h): Promise<ResponseObject> => {
     const payload = { id: request.params.id };
@@ -289,7 +289,7 @@ export const update{{{scaffold_entity_capitalise}}} = ({ services, validate, con
       payload: makeRequestPayloadSchema(validate),
     },
 
-    tags: ['api'],
+    tags: ['{{{scaffold_entities}}}'],
   },
   handler: async (request, h): Promise<ResponseObject> => {
     const payload = {
