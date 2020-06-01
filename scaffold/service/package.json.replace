@@ -16,8 +16,8 @@
     "dump": "ts-node -- src/persistence/mongoose/backup.ts",
     "lint": "eslint 'src/**'",
     "prebuild": "yarn clean",
-    "prepublishOnly": "[ \"$NODE_ENV\" = \"production\" ] && exit 0; yarn build",
     "postbuild": "yarn prettify:lib",
+    "prepublishOnly": "[ \"$NODE_ENV\" = \"production\" ] && exit 0; yarn build",
     "prettify:lib": "prettier --write 'lib/**'",
     "pretest": "yarn lint",
     "seed": "ts-node -- src/persistence/mongoose/seed.ts",
@@ -87,6 +87,6 @@
   "publishConfig": {
     "registry": "https://registry.npmjs.org/"
   },
-  "{{{scaffold_project_name}}}or": "{{{scaffold_project_{{{scaffold_project_name}}}or}}}",
+  "author": "{{{scaffold_project_author}}}",
   "license": "SEE LICENSE IN <LICENSE>"
 }
