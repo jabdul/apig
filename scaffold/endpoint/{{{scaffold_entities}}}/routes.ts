@@ -165,15 +165,14 @@ export const findAll{{{scaffold_entity_capitalise}}}s = ({ services, validate, c
           .type(JSON_TYPE)
           .takeover();
       },
-      params: {
-        pageid: validate
-          .number()
-          .integer()
-          .min(1),
-      },
       query: {
         name: validate.string().max(30),
         from: validate.date().iso(),
+        offset: validate.number().integer(),
+        page: validate
+          .number()
+          .integer()
+          .min(1),
         to: validate.date().iso(),
         limit: validate
           .number()
@@ -186,11 +185,7 @@ export const findAll{{{scaffold_entity_capitalise}}}s = ({ services, validate, c
   },
   handler: async (request, h): Promise<ResponseObject> => {
     const payload = {
-      pageid: request.params.pageid,
-      name: request.query.name,
-      from: request.query.from,
-      to: request.query.to,
-      limit: request.query.limit,
+      ...request.query,
     };
     request.log([`/${ROUTE_NAME}`]);
     let response;
