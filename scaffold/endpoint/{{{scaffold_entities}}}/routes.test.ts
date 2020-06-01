@@ -271,7 +271,7 @@ describe(`Routes: ${ROUTE_NAME}`, () => {
       mockRequest = {
         log: jest.fn(),
         query: jest.fn().mockReturnValue({
-          type: 'type',
+          offset: 'offset',
           page: 1,
           from: '2018-10-27T22:15:04.417Z',
           to: '2018-12-29T20:04:06.313Z',
@@ -287,7 +287,7 @@ describe(`Routes: ${ROUTE_NAME}`, () => {
 
     it('sets validation on query params', () => {
       const { query } = router.options.validate;
-      expect(query.type).toBeDefined();
+      expect(query.offset).toBeDefined();
       expect(query.page).toBeDefined();
       expect(query.from).toBeDefined();
       expect(query.to).toBeDefined();
