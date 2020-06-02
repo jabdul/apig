@@ -92,7 +92,7 @@ export default ({ services, config, json, validate }: RouteArgs): ServerRoute =>
 
 export const find{{{scaffold_entity_capitalise}}} = ({ services, validate, json, config }: RouteArgs): ServerRoute => ({
   method: 'GET',
-  path: '/{{{scaffold_entities}}}/{id}',
+  path: '/{{{scaffold_entities}}}/{{{{scaffold_entity}}}Id}',
   options: {
     ...service.options.secureOption,
     validate: {
@@ -112,14 +112,14 @@ export const find{{{scaffold_entity_capitalise}}} = ({ services, validate, json,
           .takeover();
       },
       params: {
-        id: validateObjectId(validate),
+        {{{scaffold_entity}}}Id: validateObjectId(validate),
       },
     },
 
     tags: ['{{{scaffold_entities}}}'],
   },
   handler: async (request, h): Promise<ResponseObject> => {
-    const payload = { id: request.params.id };
+    const payload = { id: request.params.{{{scaffold_entity}}}Id };
     request.log([`/${ROUTE_NAME}`]);
     let response;
 
@@ -146,7 +146,7 @@ export const find{{{scaffold_entity_capitalise}}} = ({ services, validate, json,
 
 export const findAll{{{scaffold_entity_capitalise}}}s = ({ services, validate, config, json }: RouteArgs): ServerRoute => ({
   method: 'GET',
-  path: '/{{{scaffold_entities}}}/page/{pageid}',
+  path: '/{{{scaffold_entities}}}',
   options: {
     ...service.options.secureOption,
     validate: {
@@ -213,7 +213,7 @@ export const findAll{{{scaffold_entity_capitalise}}}s = ({ services, validate, c
 
 export const remove{{{scaffold_entity_capitalise}}} = ({ services, validate, config, json }: RouteArgs): ServerRoute => ({
   method: 'DELETE',
-  path: '/{{{scaffold_entities}}}/{id}',
+  path: '/{{{scaffold_entities}}}/{{{{scaffold_entity}}}Id}',
   options: {
     ...service.options.secureOption,
     validate: {
@@ -233,14 +233,14 @@ export const remove{{{scaffold_entity_capitalise}}} = ({ services, validate, con
           .takeover();
       },
       params: {
-        id: validateObjectId(validate),
+        {{{scaffold_entity}}}Id: validateObjectId(validate),
       },
     },
 
     tags: ['{{{scaffold_entities}}}'],
   },
   handler: async (request, h): Promise<ResponseObject> => {
-    const payload = { id: request.params.id };
+    const payload = { id: request.params.{{{scaffold_entity}}}Id };
     request.log([`/${ROUTE_NAME}`]);
     let response;
 
@@ -263,8 +263,8 @@ export const remove{{{scaffold_entity_capitalise}}} = ({ services, validate, con
 });
 
 export const update{{{scaffold_entity_capitalise}}} = ({ services, validate, config, json }: RouteArgs): ServerRoute => ({
-  method: 'PUT',
-  path: '/{{{scaffold_entities}}}/{id}',
+  method: 'PATCH',
+  path: '/{{{scaffold_entities}}}/{{{{scaffold_entity}}}Id}',
   options: {
     ...service.options.secureOption,
     validate: {
@@ -284,7 +284,7 @@ export const update{{{scaffold_entity_capitalise}}} = ({ services, validate, con
           .takeover();
       },
       params: {
-        id: validateObjectId(validate),
+        {{{scaffold_entity}}}Id: validateObjectId(validate),
       },
       payload: makeRequestPayloadSchema(validate),
     },
@@ -294,7 +294,7 @@ export const update{{{scaffold_entity_capitalise}}} = ({ services, validate, con
   handler: async (request, h): Promise<ResponseObject> => {
     const payload = {
       ...(request.payload as object),
-      id: request.params.id,
+      id: request.params.{{{scaffold_entity}}}Id,
     };
     request.log([`/${ROUTE_NAME}`]);
     let response;

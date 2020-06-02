@@ -45,7 +45,7 @@ describe('Users', () => {
 
       verify{{{scaffold_entity_capitalise}}}({{{scaffold_entity_capitalise}}});
 
-      verifyResponse({ {{{scaffold_entity_capitalise}}}, payload });
+      verifyResponse({{{scaffold_entity_capitalise}}}, payload);
       expect({{{scaffold_entity_capitalise}}}.id).toBeValidObjectId();
     });
 
