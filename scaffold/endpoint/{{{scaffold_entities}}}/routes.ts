@@ -57,7 +57,7 @@ export default ({ services, config, json, validate }: RouteArgs): ServerRoute =>
         .requiredKeys('name')
         .optionalKeys('meta'),
     },
-    tags: ['api'],
+    tags: ['{{{scaffold_entities}}}'],
   },
   handler: async (request, h): Promise<ResponseObject> => {
     request.log([`/${ROUTE_NAME}`]);
@@ -92,7 +92,7 @@ export default ({ services, config, json, validate }: RouteArgs): ServerRoute =>
 
 export const find{{{scaffold_entity_capitalise}}} = ({ services, validate, json, config }: RouteArgs): ServerRoute => ({
   method: 'GET',
-  path: '/{{{scaffold_entities}}}/{id}',
+  path: '/{{{scaffold_entities}}}/{{{{scaffold_entity}}}Id}',
   options: {
     ...service.options.secureOption,
     validate: {
@@ -112,14 +112,14 @@ export const find{{{scaffold_entity_capitalise}}} = ({ services, validate, json,
           .takeover();
       },
       params: {
-        id: validateObjectId(validate),
+        {{{scaffold_entity}}}Id: validateObjectId(validate),
       },
     },
 
-    tags: ['api'],
+    tags: ['{{{scaffold_entities}}}'],
   },
   handler: async (request, h): Promise<ResponseObject> => {
-    const payload = { id: request.params.id };
+    const payload = { id: request.params.{{{scaffold_entity}}}Id };
     request.log([`/${ROUTE_NAME}`]);
     let response;
 
@@ -146,7 +146,7 @@ export const find{{{scaffold_entity_capitalise}}} = ({ services, validate, json,
 
 export const findAll{{{scaffold_entity_capitalise}}}s = ({ services, validate, config, json }: RouteArgs): ServerRoute => ({
   method: 'GET',
-  path: '/{{{scaffold_entities}}}/page/{pageid}',
+  path: '/{{{scaffold_entities}}}',
   options: {
     ...service.options.secureOption,
     validate: {
@@ -165,15 +165,14 @@ export const findAll{{{scaffold_entity_capitalise}}}s = ({ services, validate, c
           .type(JSON_TYPE)
           .takeover();
       },
-      params: {
-        pageid: validate
-          .number()
-          .integer()
-          .min(1),
-      },
       query: {
         name: validate.string().max(30),
         from: validate.date().iso(),
+        offset: validate.number().integer(),
+        page: validate
+          .number()
+          .integer()
+          .min(1),
         to: validate.date().iso(),
         limit: validate
           .number()
@@ -182,15 +181,11 @@ export const findAll{{{scaffold_entity_capitalise}}}s = ({ services, validate, c
       },
     },
 
-    tags: ['api'],
+    tags: ['{{{scaffold_entities}}}'],
   },
   handler: async (request, h): Promise<ResponseObject> => {
     const payload = {
-      pageid: request.params.pageid,
-      name: request.query.name,
-      from: request.query.from,
-      to: request.query.to,
-      limit: request.query.limit,
+      ...request.query,
     };
     request.log([`/${ROUTE_NAME}`]);
     let response;
@@ -218,7 +213,7 @@ export const findAll{{{scaffold_entity_capitalise}}}s = ({ services, validate, c
 
 export const remove{{{scaffold_entity_capitalise}}} = ({ services, validate, config, json }: RouteArgs): ServerRoute => ({
   method: 'DELETE',
-  path: '/{{{scaffold_entities}}}/{id}',
+  path: '/{{{scaffold_entities}}}/{{{{scaffold_entity}}}Id}',
   options: {
     ...service.options.secureOption,
     validate: {
@@ -238,14 +233,14 @@ export const remove{{{scaffold_entity_capitalise}}} = ({ services, validate, con
           .takeover();
       },
       params: {
-        id: validateObjectId(validate),
+        {{{scaffold_entity}}}Id: validateObjectId(validate),
       },
     },
 
-    tags: ['api'],
+    tags: ['{{{scaffold_entities}}}'],
   },
   handler: async (request, h): Promise<ResponseObject> => {
-    const payload = { id: request.params.id };
+    const payload = { id: request.params.{{{scaffold_entity}}}Id };
     request.log([`/${ROUTE_NAME}`]);
     let response;
 
@@ -268,8 +263,8 @@ export const remove{{{scaffold_entity_capitalise}}} = ({ services, validate, con
 });
 
 export const update{{{scaffold_entity_capitalise}}} = ({ services, validate, config, json }: RouteArgs): ServerRoute => ({
-  method: 'PUT',
-  path: '/{{{scaffold_entities}}}/{id}',
+  method: 'PATCH',
+  path: '/{{{scaffold_entities}}}/{{{{scaffold_entity}}}Id}',
   options: {
     ...service.options.secureOption,
     validate: {
@@ -289,17 +284,17 @@ export const update{{{scaffold_entity_capitalise}}} = ({ services, validate, con
           .takeover();
       },
       params: {
-        id: validateObjectId(validate),
+        {{{scaffold_entity}}}Id: validateObjectId(validate),
       },
       payload: makeRequestPayloadSchema(validate),
     },
 
-    tags: ['api'],
+    tags: ['{{{scaffold_entities}}}'],
   },
   handler: async (request, h): Promise<ResponseObject> => {
     const payload = {
       ...(request.payload as object),
-      id: request.params.id,
+      id: request.params.{{{scaffold_entity}}}Id,
     };
     request.log([`/${ROUTE_NAME}`]);
     let response;

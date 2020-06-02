@@ -1,9 +1,7 @@
-import { http } from '@ctt/service-utils';
+import { http, test } from '@ctt/service-utils';
 import { factory } from 'factory-girl';
-import application, {
-  parsedSingleResponse,
-  parsedErrorResponse,
-} from '../../test/utils/requestHelper';
+import application from '../../test/utils/requestHelper';
+import config, { configFiles } from '../utils/loadconfig';
 
 import '../../test/factories/{{{scaffold_factory}}}';
 import { verify{{{scaffold_entity_capitalise}}}, verifyResponse } from '../../test/helpers/{{{scaffold_entities}}}';
@@ -11,14 +9,21 @@ import { verify{{{scaffold_entity_capitalise}}}, verifyResponse } from '../../te
 import { ROUTE_NAME } from './routes';
 
 const { response: { CREATED, JSON_TYPE , BAD_REQUEST} } = http;
+const {
+  requestHelpers: { parsedSingleResponse, parsedErrorResponse, bearerToken },
+} = test;
+
+config.loadFile(configFiles);
 
 let app = null;
-const url =  `/${ROUTE_NAME}`
+const url =  `/${ROUTE_NAME}`;
+let headers = null;
 
 describe('Users', () => {
   beforeAll(async () => {
     app = await application();
     await app.start();
+    headers = bearerToken(config);
   });
 
   afterAll(async () => {
@@ -35,6 +40,7 @@ describe('Users', () => {
         method: 'POST',
         url,
         payload,
+        headers,
       });
 
       expect(response.statusCode).toBe(CREATED.code);
@@ -45,7 +51,7 @@ describe('Users', () => {
 
       verify{{{scaffold_entity_capitalise}}}({{{scaffold_entity_capitalise}}});
 
-      verifyResponse({ {{{scaffold_entity_capitalise}}}, payload });
+      verifyResponse({{{scaffold_entity_capitalise}}}, payload);
       expect({{{scaffold_entity_capitalise}}}.id).toBeValidObjectId();
     });
 
@@ -55,6 +61,7 @@ describe('Users', () => {
         method: 'POST',
         url,
         payload,
+        headers,
       });
 
       expect(response.statusCode).toBe(BAD_REQUEST.code);

@@ -1,13 +1,13 @@
-const attrs = ['name' 'meta.active'];
+const attrs = ['name', 'meta.active'];
 
-export const verify{{{scaffold_entity_capitalise}}} = (resource): void => {
+export const verify{{{scaffold_entity_capitalise}}} = ({{{scaffold_entity}}}): void => {
   attrs.forEach(attr => {
-    expect(resource).toHaveProperty(attr);
+    expect({{{scaffold_entity}}})).toHaveProperty(attr);
   });
 };
 
-export const verifyResponse = ({ resource, payload }): void => {
+export const verifyResponse = ({{{scaffold_entity}}}, payload): void => {
   attrs.forEach(attr => {
-    expect(resource[attr]).toEqual(payload[attr]);
+    expect({{{scaffold_entity}}})[attr]).toEqual(payload[attr]);
   });
 };

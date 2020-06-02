@@ -2,7 +2,7 @@ import tmplJson from './parsers/json';
 import { Dict, Crud, ServiceArgs } from '@ctt/crud-api';
 import { {{{scaffold_entity_capitalise}}}I } from '../persistence/mongoose/{{{scaffold_entity_capitalise}}}/model';
 import { PaginateResult } from 'mongoose';
-import { responseDocumentSchema } from '../utils/schemas';
+import { responseDocumentSchema, createPaginationLink } from '../utils/schemas';
 
 const create = async ({ db, payload, config, json }: ServiceArgs): Promise<string> => {
   const {{{scaffold_entity}}} = await db.{{{scaffold_entities}}}.create({ payload, config });
@@ -35,9 +35,31 @@ const findAll = async ({ db, payload, config, json }: ServiceArgs): Promise<stri
     throw Error('Could not find {{{scaffold_entities}}}');
   }
 
-  const { docs } = {{{scaffold_entities}}};
+  const {
+    docs,
+    totalDocs: items,
+    nextPage,
+    prevPage,
+    totalPages: pages,
+    page,
+    hasNextPage,
+    hasPrevPage,
+    limit,
+    pagingCounter,
+  } = {{{scaffold_entities}}};
 
-  return json(responseDocumentSchema(tmplJson))({ data: docs });
+  const {{{scaffold_entity}}}Paginator = createPaginationLink('{{{scaffold_entities}}}');
+
+  const next = hasNextPage && {{{scaffold_entity}}}Paginator(nextPage, limit);
+  const previous = hasPrevPage && {{{scaffold_entity}}}Paginator(prevPage, limit);
+  const first = {{{scaffold_entity}}}Paginator(page, 1, pagingCounter - 1);
+  const last = {{{scaffold_entity}}}Paginator(page, 1, pagingCounter - 2 + docs.length);
+  const current = {{{scaffold_entity}}}Paginator(page, limit);
+
+  return json(responseDocumentSchema(tmplJson))({
+    data: docs,
+    pagination: pickBy(val => !!val, { items, next, previous, pages, first, last, current }),
+  });
 };
 
 const removeById = async ({ db, payload, config }: ServiceArgs): Promise<void> => {
