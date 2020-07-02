@@ -32,6 +32,8 @@
     "lib"
   ],
   "devDependencies": {
+    "@stoplight/prism-cli": "3.3.4",
+    "@stoplight/spectral": "5.3.0",
     "@types/convict": "4.2.1",
     "@types/hapi": "18.0.3",
     "@types/jest": "25.2.2",
