@@ -52,6 +52,8 @@ export const generator = function ({ endpoint, endpoints, title, destination }) 
         ...{
           scaffold_entities: endpoints,
           scaffold_entity: endpoint,
+          scaffold_entity_id: `${endpoint}Id`,
+          scaffold_entity_route_id: `{${endpoint}Id}`,
           scaffold_entity_capitalise: title,
           scaffold_factory: title.toLowerCase(),
         },
