@@ -102,18 +102,18 @@ describe(`Routes: ${ROUTE_NAME}`, () => {
       mockContentType.mockImplementation(() => mockResponse);
       mockRequest = {
         log: jest.fn(),
-        params: jest.fn().mockReturnValue({ {{{scaffold_entity}}}Id: uid }),
+        params: jest.fn().mockReturnValue({ {{{scaffold_entity_route_id}}}: uid }),
       };
     });
 
     it(`sets HTTP method GET on /${ROUTE_NAME} path`, () => {
       expect(router.method).toBe('GET');
-      expect(router.path).toBe(`/${ROUTE_NAME}/{{{{scaffold_entity}}}Id}`);
+      expect(router.path).toBe(`/${ROUTE_NAME}/{{{scaffold_entity_route_id}}}`);
     });
 
     it('sets validation on request params', () => {
       const { params } = router.options.validate;
-      expect(params.{{{scaffold_entity}}}Id).toBeDefined();
+      expect(params.{{{scaffold_entity_route_id}}}).toBeDefined();
     });
 
     it(`sets response HTTP status code to ${statusCode} on success`, async () => {
@@ -159,18 +159,18 @@ describe(`Routes: ${ROUTE_NAME}`, () => {
       mockStatusCode.mockImplementation(() => mockResponse);
       mockRequest = {
         log: jest.fn(),
-        params: jest.fn().mockReturnValue({ {{{scaffold_entity}}}Id: uid }),
+        params: jest.fn().mockReturnValue({ {{{scaffold_entity_route_id}}}: uid }),
       };
     });
 
     it(`sets HTTP method DELETE on /${ROUTE_NAME} path`, () => {
       expect(router.method).toBe('DELETE');
-      expect(router.path).toBe(`/${ROUTE_NAME}/{{{{scaffold_entity}}}Id}`);
+      expect(router.path).toBe(`/${ROUTE_NAME}/{{{scaffold_entity_route_id}}}`);
     });
 
     it('sets validation on request params', () => {
       const { params } = router.options.validate;
-      expect(params.{{{scaffold_entity}}}Id).toBeDefined();
+      expect(params.{{{scaffold_entity_route_id}}}).toBeDefined();
     });
 
     it(`sets response HTTP status code to ${statusCode} on success`, async () => {
@@ -211,20 +211,20 @@ describe(`Routes: ${ROUTE_NAME}`, () => {
       mockStatusCode.mockImplementation(() => mockResponse);
       mockRequest = {
         log: jest.fn(),
-        params: jest.fn().mockReturnValue({ {{{scaffold_entity}}}Id: uid }),
+        params: jest.fn().mockReturnValue({ {{{scaffold_entity_route_id}}}: uid }),
         payload: jest.fn().mockReturnValue({}),
       };
     });
 
     it(`sets HTTP method PATCH on /${ROUTE_NAME} path`, () => {
       expect(router.method).toBe('PATCH');
-      expect(router.path).toBe(`/${ROUTE_NAME}/{{{{scaffold_entity}}}Id}`);
+      expect(router.path).toBe(`/${ROUTE_NAME}/{{{scaffold_entity_route_id}}}`);
     });
 
     it('sets validation on request payload and params', () => {
       const { payload } = router.options.validate;
       const { params } = router.options.validate;
-      expect(params.{{{scaffold_entity}}}Id).toBeDefined();
+      expect(params.{{{scaffold_entity_route_id}}}).toBeDefined();
       expect(payload).toBeDefined();
     });
 
