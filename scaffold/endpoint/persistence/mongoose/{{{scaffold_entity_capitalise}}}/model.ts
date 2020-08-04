@@ -10,7 +10,7 @@ interface {{{scaffold_entity_capitalise}}}Fields extends Persistable {
 
 export interface {{{scaffold_entity_capitalise}}}I extends {{{scaffold_entity_capitalise}}}Fields, Document {}
 
-export const {{{scaffold_entity_capitalise}}}Schema: Schema = new Schema(
+export const {{{scaffold_entity_capitalise}}}Schema = new Schema(
   {
     name: { type: String, lowercase: true, trim: true, required: true },
     meta: { type: MetaSchema },
