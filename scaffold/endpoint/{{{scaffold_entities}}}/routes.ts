@@ -263,7 +263,7 @@ export const remove{{{scaffold_entity_capitalise}}} = ({ services, validate, con
 });
 
 export const update{{{scaffold_entity_capitalise}}} = ({ services, validate, config, json }: RouteArgs): ServerRoute => ({
-  method: 'PATCH',
+  method: 'PUT',
   path: '/{{{scaffold_entities}}}/{{{scaffold_entity_route_id}}}',
   options: {
     ...service.options.secureOption,

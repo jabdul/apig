@@ -189,7 +189,7 @@ describe(`Routes: ${ROUTE_NAME}`, () => {
     });
   });
 
-  describe(`PATCH /${ROUTE_NAME}`, () => {
+  describe(`PUT /${ROUTE_NAME}`, () => {
     const router: any = update{{{scaffold_entity_capitalise}}}({ services, validate }); // eslint-disable-line @typescript-eslint/no-explicit-any
     const responseData = '{{{scaffold_entity_capitalise}}} entry modified';
     const statusCode = 200;
@@ -216,8 +216,8 @@ describe(`Routes: ${ROUTE_NAME}`, () => {
       };
     });
 
-    it(`sets HTTP method PATCH on /${ROUTE_NAME} path`, () => {
-      expect(router.method).toBe('PATCH');
+    it(`sets HTTP method PUT on /${ROUTE_NAME} path`, () => {
+      expect(router.method).toBe('PUT');
       expect(router.path).toBe(`/${ROUTE_NAME}/{{{scaffold_entity_route_id}}}`);
     });
 
