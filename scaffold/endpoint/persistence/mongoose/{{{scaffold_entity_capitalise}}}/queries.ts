@@ -8,7 +8,7 @@ import { QueryArgs, DbClient, Query } from '@ctt/crud-api';
 const create = async ({ payload }: QueryArgs): Promise<{{{scaffold_entity_capitalise}}}I> => {
   const {{{scaffold_entity}}} = new {{{scaffold_entity_capitalise}}}({
     ...payload,
-    meta: { ...payload.meta, ...{ created: timezone.parse(Date.now(), intl.tz.LB) } },
+    meta: { ...payload.meta, ...{ created: timezone.parse(Date.now(), intl.tz.WAT) } },
   });
 
   return (await {{{scaffold_entity}}}.save()).toObject();
@@ -23,6 +23,7 @@ const findAll = async ({ payload }: QueryArgs): Promise<PaginateResult<{{{scaffo
           $gte: path(['from'], payload),
           $lte: path(['to'], payload),
         },
+        'meta.active': true,
       }),
     },
     {
@@ -36,26 +37,24 @@ const findAll = async ({ payload }: QueryArgs): Promise<PaginateResult<{{{scaffo
   );
 
 const findById = async ({ payload }: QueryArgs): Promise<{{{scaffold_entity_capitalise}}}I> =>
-  {{{scaffold_entity_capitalise}}}.findById(payload.id).lean({ virtuals: true });
+  {{{scaffold_entity_capitalise}}}.findOne({ _id: payload.id, 'meta.active': true }).lean({ virtuals: true });
 
 const removeById = async ({ payload }: QueryArgs): Promise<object> =>
   {{{scaffold_entity_capitalise}}}.updateOne(
-    { _id: payload.id },
-    { $set: { 'meta.active': false, 'meta.updated': Date.now() } },
+    { _id: payload.id, 'meta.active': true },
+    { $set: { 'meta.active': false, 'meta.updated': timezone.parse(Date.now(), intl.tz.WAT) } },
   );
 
 const updateById = async ({ payload }: QueryArgs): Promise<object> =>
   {{{scaffold_entity_capitalise}}}.updateOne(
-    { _id: payload.id },
+    { _id: payload.id, 'meta.active': true },
     {
-      ...pickBy(val => !!val, {
-        ...payload,
-        ...{
-          $set: {
-            'meta.updated': Date.now(),
-          },
-        },
-      }),
+      $set: {
+        ...pickBy(val => !!val, {
+          ...payload,
+          'meta.updated': timezone.parse(Date.now(), intl.tz.WAT),
+        }),
+      },
     },
   );
 

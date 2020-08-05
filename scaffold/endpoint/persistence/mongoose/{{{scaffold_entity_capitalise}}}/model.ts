@@ -19,7 +19,7 @@ export const {{{scaffold_entity_capitalise}}}Schema = new Schema(
 );
 
 {{{scaffold_entity_capitalise}}}Schema.virtual('links').get(function() {
-  return { self: { href: this.id } };
+  return { self: { href: `/${this.id}` } };
 });
 
 {{{scaffold_entity_capitalise}}}Schema.index({ 'meta.created': -1 });
