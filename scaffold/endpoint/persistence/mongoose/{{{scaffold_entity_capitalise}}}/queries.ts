@@ -59,14 +59,14 @@ const updateById = async ({ payload }: QueryArgs): Promise<object> =>
   );
 
 export default (client: DbClient): Query<{{{scaffold_entity_capitalise}}}I> => ({
-  create: async ({ payload, config }: QueryArgs): Promise<{{{scaffold_entity_capitalise}}}I> =>
-    await create({ client, payload, config }),
-  findAll: async ({ payload }: QueryArgs): Promise<PaginateResult<{{{scaffold_entity_capitalise}}}I>> =>
-    await findAll({ payload, client }),
-  findById: async ({ payload }: QueryArgs): Promise<{{{scaffold_entity_capitalise}}}I> =>
-    await findById({ payload, client }),
-  removeById: async ({ payload }: QueryArgs): Promise<object> =>
-    await removeById({ payload, client }),
-  updateById: async ({ payload }: QueryArgs): Promise<object> =>
-    await updateById({ payload, client }),
+  create: ({ payload, config }: QueryArgs): Promise<{{{scaffold_entity_capitalise}}}I> =>
+   create({ client, payload, config }),
+  findAll: ({ payload }: QueryArgs): Promise<PaginateResult<{{{scaffold_entity_capitalise}}}I>> =>
+   findAll({ payload, client }),
+  findById: ({ payload }: QueryArgs): Promise<{{{scaffold_entity_capitalise}}}I> =>
+   findById({ payload, client }),
+  removeById: ({ payload }: QueryArgs): Promise<object> =>
+   removeById({ payload, client }),
+  updateById: ({ payload }: QueryArgs): Promise<object> =>
+   updateById({ payload, client }),
 });

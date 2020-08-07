@@ -82,35 +82,35 @@ const updateById = async ({ db, payload, config }: ServiceArgs): Promise<object>
 };
 
 export default (db: Dict): Crud<string> => ({
-  create: async ({ payload, config, json }: ServiceArgs): Promise<string> =>
+  create: ({ payload, config, json }: ServiceArgs): Promise<string> =>
     create({
       db,
       payload,
       config,
       json,
     }),
-  findById: async ({ payload, config, json }: ServiceArgs): Promise<string> =>
+  findById: ({ payload, config, json }: ServiceArgs): Promise<string> =>
     findById({
       db,
       payload,
       config,
       json,
     }),
-  findAll: async ({ payload, config, json }: ServiceArgs): Promise<any> => // eslint-disable-line
+  findAll: ({ payload, config, json }: ServiceArgs): Promise<any> => // eslint-disable-line
     findAll({
       db,
       payload,
       config,
       json,
     }),
-  removeById: async ({ payload, config, json }: ServiceArgs): Promise<void> =>
+  removeById: ({ payload, config, json }: ServiceArgs): Promise<void> =>
     removeById({
       db,
       payload,
       config,
       json,
     }),
-  updateById: async ({ payload, config, json }: ServiceArgs): Promise<object> =>
+  updateById: ({ payload, config, json }: ServiceArgs): Promise<object> =>
     updateById({
       db,
       payload,
