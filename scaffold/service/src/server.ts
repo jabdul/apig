@@ -11,6 +11,10 @@ import services from './services';
 import config, { configFiles } from './utils/loadconfig';
 import { Server } from 'hapi';
 
+config.loadFile(configFiles);
+
+import '../env';
+
 interface {{{scaffold_server_name}}}Server extends Server {
   permissions: PermissionOnRedis;
 }
@@ -33,8 +37,6 @@ type PermissionsQuery = (role: string) => Promise<ResourcePermission[]>;
 interface DataSource {
   query: PermissionsQuery;
 }
-
-config.loadFile(configFiles);
 
 type datasource = (app: {{{scaffold_server_name}}}Server) => Promise<DataSource>;
 
