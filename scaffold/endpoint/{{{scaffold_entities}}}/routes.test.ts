@@ -102,7 +102,7 @@ describe(`Routes: ${ROUTE_NAME}`, () => {
       mockContentType.mockImplementation(() => mockResponse);
       mockRequest = {
         log: jest.fn(),
-        params: jest.fn().mockReturnValue({ {{{scaffold_entity_route_id}}}: uid }),
+        params: jest.fn().mockReturnValue({ {{scaffold_entity_route_id}}: uid }),
       };
     });
 
@@ -113,7 +113,7 @@ describe(`Routes: ${ROUTE_NAME}`, () => {
 
     it('sets validation on request params', () => {
       const { params } = router.options.validate;
-      expect(params.{{{scaffold_entity_route_id}}}).toBeDefined();
+      expect(params.{{scaffold_entity_route_id}}).toBeDefined();
     });
 
     it(`sets response HTTP status code to ${statusCode} on success`, async () => {
@@ -159,7 +159,7 @@ describe(`Routes: ${ROUTE_NAME}`, () => {
       mockStatusCode.mockImplementation(() => mockResponse);
       mockRequest = {
         log: jest.fn(),
-        params: jest.fn().mockReturnValue({ {{{scaffold_entity_route_id}}}: uid }),
+        params: jest.fn().mockReturnValue({ {{scaffold_entity_route_id}}: uid }),
       };
     });
 
@@ -170,7 +170,7 @@ describe(`Routes: ${ROUTE_NAME}`, () => {
 
     it('sets validation on request params', () => {
       const { params } = router.options.validate;
-      expect(params.{{{scaffold_entity_route_id}}}).toBeDefined();
+      expect(params.{{scaffold_entity_route_id}}).toBeDefined();
     });
 
     it(`sets response HTTP status code to ${statusCode} on success`, async () => {
@@ -211,7 +211,7 @@ describe(`Routes: ${ROUTE_NAME}`, () => {
       mockStatusCode.mockImplementation(() => mockResponse);
       mockRequest = {
         log: jest.fn(),
-        params: jest.fn().mockReturnValue({ {{{scaffold_entity_route_id}}}: uid }),
+        params: jest.fn().mockReturnValue({ {{scaffold_entity_route_id}}: uid }),
         payload: jest.fn().mockReturnValue({}),
       };
     });
@@ -224,7 +224,7 @@ describe(`Routes: ${ROUTE_NAME}`, () => {
     it('sets validation on request payload and params', () => {
       const { payload } = router.options.validate;
       const { params } = router.options.validate;
-      expect(params.{{{scaffold_entity_route_id}}}).toBeDefined();
+      expect(params.{{scaffold_entity_route_id}}).toBeDefined();
       expect(payload).toBeDefined();
     });
 
