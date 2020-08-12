@@ -11,5 +11,8 @@
     "database": "{{{scaffold_mongodb_name}}}",
     "user": "user",
     "pass": "password"
+  },
+  "jwt": {
+    "secret": "{{{scaffold_project_organisation}}}"
   }
 }
