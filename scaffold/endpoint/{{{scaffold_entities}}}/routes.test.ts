@@ -4,10 +4,10 @@ const {
   routes: { validate },
 } = test;
 
-import create, { ROUTE_NAME, find{{{scaffold_entity_capitalise}}}, remove{{{scaffold_entity_capitalise}}}, update{{{scaffold_entity_capitalise}}}, findAll{{{scaffold_entity_capitalise}}}s } from './routes';
+import create, { ROUTE_NAME, find{{{scaffold_entity_capitalise}}}, remove{{{scaffold_entity_capitalise}}}, update{{{scaffold_entity_capitalise}}}, findAll{{{scaffold_entities_capitalized}}} } from './routes';
 
 describe(`Routes: ${ROUTE_NAME}`, () => {
-  const uid = '5c3cab69ffb5bd22494a8484';
+  const {{{scaffold_entity_id}}} = '5c3cab69ffb5bd22494a8484';
   const services = {
     {{{scaffold_entities}}}: {
       create: jest.fn().mockReturnValue('{{{scaffold_entity_capitalise}}} entry created'),
@@ -102,7 +102,7 @@ describe(`Routes: ${ROUTE_NAME}`, () => {
       mockContentType.mockImplementation(() => mockResponse);
       mockRequest = {
         log: jest.fn(),
-        params: jest.fn().mockReturnValue({ {{scaffold_entity_route_id}}: uid }),
+        params: jest.fn().mockReturnValue({ {{{scaffold_entity_id}}} }),
       };
     });
 
@@ -113,7 +113,7 @@ describe(`Routes: ${ROUTE_NAME}`, () => {
 
     it('sets validation on request params', () => {
       const { params } = router.options.validate;
-      expect(params.{{scaffold_entity_route_id}}).toBeDefined();
+      expect(params.{{{scaffold_entity_id}}}).toBeDefined();
     });
 
     it(`sets response HTTP status code to ${statusCode} on success`, async () => {
@@ -159,7 +159,7 @@ describe(`Routes: ${ROUTE_NAME}`, () => {
       mockStatusCode.mockImplementation(() => mockResponse);
       mockRequest = {
         log: jest.fn(),
-        params: jest.fn().mockReturnValue({ {{scaffold_entity_route_id}}: uid }),
+        params: jest.fn().mockReturnValue({ {{{scaffold_entity_id}}} }),
       };
     });
 
@@ -170,7 +170,7 @@ describe(`Routes: ${ROUTE_NAME}`, () => {
 
     it('sets validation on request params', () => {
       const { params } = router.options.validate;
-      expect(params.{{scaffold_entity_route_id}}).toBeDefined();
+      expect(params.{{{scaffold_entity_id}}}).toBeDefined();
     });
 
     it(`sets response HTTP status code to ${statusCode} on success`, async () => {
@@ -211,7 +211,7 @@ describe(`Routes: ${ROUTE_NAME}`, () => {
       mockStatusCode.mockImplementation(() => mockResponse);
       mockRequest = {
         log: jest.fn(),
-        params: jest.fn().mockReturnValue({ {{scaffold_entity_route_id}}: uid }),
+        params: jest.fn().mockReturnValue({ {{{scaffold_entity_id}}} }),
         payload: jest.fn().mockReturnValue({}),
       };
     });
@@ -224,7 +224,7 @@ describe(`Routes: ${ROUTE_NAME}`, () => {
     it('sets validation on request payload and params', () => {
       const { payload } = router.options.validate;
       const { params } = router.options.validate;
-      expect(params.{{scaffold_entity_route_id}}).toBeDefined();
+      expect(params.{{{scaffold_entity_id}}}).toBeDefined();
       expect(payload).toBeDefined();
     });
 
@@ -245,7 +245,7 @@ describe(`Routes: ${ROUTE_NAME}`, () => {
   });
 
   describe('GET /{{{scaffold_entities}}}', () => {
-    const router: any = findAll{{{scaffold_entity_capitalise}}}s({ services, validate }); // eslint-disable-line @typescript-eslint/no-explicit-any
+    const router: any = findAll{{{scaffold_entities_capitalized}}}({ services, validate }); // eslint-disable-line @typescript-eslint/no-explicit-any
     const responseData = '{{{scaffold_entity_capitalise}}} entries fetched';
     const statusCode = 200;
     const contentType = 'application/json';

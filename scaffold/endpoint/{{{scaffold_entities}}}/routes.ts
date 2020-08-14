@@ -92,7 +92,7 @@ export default ({ services, config, json, validate }: RouteArgs): ServerRoute =>
 
 export const find{{{scaffold_entity_capitalise}}} = ({ services, validate, json, config }: RouteArgs): ServerRoute => ({
   method: 'GET',
-  path: '/{{{scaffold_entities}}}/{{{scaffold_entity_route_id}}}',
+  path: `/${ROUTE_NAME}/{{{scaffold_entity_route_id}}}`,
   options: {
     ...service.options.secureOption,
     validate: {
@@ -144,7 +144,7 @@ export const find{{{scaffold_entity_capitalise}}} = ({ services, validate, json,
   },
 });
 
-export const findAll{{{scaffold_entity_capitalise}}}s = ({ services, validate, config, json }: RouteArgs): ServerRoute => ({
+export const findAll{{{scaffold_entities_capitalized}}} = ({ services, validate, config, json }: RouteArgs): ServerRoute => ({
   method: 'GET',
   path: '/{{{scaffold_entities}}}',
   options: {
@@ -213,7 +213,7 @@ export const findAll{{{scaffold_entity_capitalise}}}s = ({ services, validate, c
 
 export const remove{{{scaffold_entity_capitalise}}} = ({ services, validate, config, json }: RouteArgs): ServerRoute => ({
   method: 'DELETE',
-  path: '/{{{scaffold_entities}}}/{{{scaffold_entity_route_id}}}',
+  path: `/${ROUTE_NAME}/{{{scaffold_entity_route_id}}}`,
   options: {
     ...service.options.secureOption,
     validate: {
@@ -264,7 +264,7 @@ export const remove{{{scaffold_entity_capitalise}}} = ({ services, validate, con
 
 export const update{{{scaffold_entity_capitalise}}} = ({ services, validate, config, json }: RouteArgs): ServerRoute => ({
   method: 'PUT',
-  path: '/{{{scaffold_entities}}}/{{{scaffold_entity_route_id}}}',
+  path: `/${ROUTE_NAME}/{{{scaffold_entity_route_id}}}`,
   options: {
     ...service.options.secureOption,
     validate: {

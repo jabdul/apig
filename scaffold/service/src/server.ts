@@ -45,9 +45,9 @@ const datasource = async (application: {{{scaffold_server_name}}}Server): Promis
 
   return {
     query: async (role: string): Promise<ResourcePermission[]> => {
-      const permissions: PermissionOnRedis = application.permissions
-        ? application.permissions
-        : JSON.parse(await redis.get(`${config.get('service.name')}:Permissions`));
+      const permissions: PermissionOnRedis =
+        application.permissions ||
+        JSON.parse(await redis.get(`${config.get('service.project')}:${config.get('service.name')}:Permissions`));
 
       application.permissions = permissions;
 

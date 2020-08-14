@@ -29,7 +29,7 @@ const findAll = async ({ db, payload, config, json }: ServiceArgs): Promise<stri
   const {{{scaffold_entities}}} = (await db.{{{scaffold_entities}}}.findAll({ payload, config })) as PaginateResult<{{{scaffold_entity_capitalise}}}I>;
 
   if (!{{{scaffold_entities}}}) {
-    throw Error(`${{{{scaffold_entities}}}}`);
+    throw Error(`${ {{{scaffold_entities}}} }`);
   }
 
   if ({{{scaffold_entities}}}.docs.length < 1) {

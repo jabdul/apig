@@ -29,7 +29,7 @@ const findAll = async ({ payload }: QueryArgs): Promise<PaginateResult<{{{scaffo
     {
       page: payload.page,
       limit: payload.limit,
-      offset: payload.offset,
+      [payload.offset && 'offset']: payload.offset,
       lean: true,
       leanWithId: true,
       sort: { 'meta.created': 'desc', 'meta.updated': 'desc' },
