@@ -11,6 +11,10 @@ import services from './services';
 import config, { configFiles } from './utils/loadconfig';
 import { Server } from 'hapi';
 
+config.loadFile(configFiles);
+
+import '../env';
+
 interface {{{scaffold_server_name}}}Server extends Server {
   permissions: PermissionOnRedis;
 }
@@ -34,8 +38,6 @@ interface DataSource {
   query: PermissionsQuery;
 }
 
-config.loadFile(configFiles);
-
 type datasource = (app: {{{scaffold_server_name}}}Server) => Promise<DataSource>;
 
 const datasource = async (application: {{{scaffold_server_name}}}Server): Promise<DataSource> => {
@@ -43,9 +45,9 @@ const datasource = async (application: {{{scaffold_server_name}}}Server): Promis
 
   return {
     query: async (role: string): Promise<ResourcePermission[]> => {
-      const permissions: PermissionOnRedis = application.permissions
-        ? application.permissions
-        : JSON.parse(await redis.get(`${config.get('service.name')}:Permissions`));
+      const permissions: PermissionOnRedis =
+        application.permissions ||
+        JSON.parse(await redis.get(`${config.get('service.project')}:${config.get('service.name')}:Permissions`));
 
       application.permissions = permissions;
 
